@@ -19,6 +19,17 @@ typedef struct _BaseShot {
 	bool flag;
 }BaseShot;
 
+typedef struct _BaseSword {
+	float x;
+	float y;
+	float sdig;
+	float gdig;
+	int flame;
+	char l_or_r;
+	int pattern;
+	bool flag;
+}BaseSword;
+
 
 void stage_Initialize();
 

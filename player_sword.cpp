@@ -1,7 +1,10 @@
+//‰˜‚­‚Ä‚·‚¢‚Ü‚¹‚ñ‚Ë
+//Œã‚Å‘‚«’¼‚·‚Ì‚Å¡‚Í‚±‚ê‚Å—eÍ‚µ‚Ä
+
 #include "DxLib.h"
 #include <math.h>
 #include "BaseUnit.h"
-#include "playersword.h"
+#include "player_sword.h"
 #include "calculation.h"
 #define R 40
 
