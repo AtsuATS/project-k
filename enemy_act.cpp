@@ -12,30 +12,13 @@ int collision1(Enemy_status enemy[], BaseShot playershot[], int i) {
 
 	for (int j = 0; j < PMAXSHOT; j++) {
 		if (playershot[j].flag == 1) {
-			
-			//’Ç‰Á...‰¼ƒXƒRƒAA“–‚½‚è”»’èŒvZ“™////////////////////////////////////////////////////
-			//lŠp////////////////////////////////////////////////////////////////////////////////
-			/*
-			distance_x[i] = (playershot[i].x) - (enemy[i].x + 24);
-			distance_y[i] = (playershot[i].y) - (enemy[i].y + 30);
-			*/
-			//////////////////////////////////////////////////////////////////////////////////////
-			//“–‚½‚è”»’èilŠpj//////////////////////////////////////////////////////////////////
-			/*
-			if (distance_x[i] < 0)distance_x[i] *= -1;
-			if (distance_y[i] < 0)distance_y[i] *= -1;
-			if (distance_x[i] < 10 && distance_y[i] < 10)
-			score += 1;
-			*/
-			////////////////////////////////////////////////////////////////////////////////////////
 
-
-			//‰~//////////////////////////////////////////////////////////////////////////////////
+			//‰~
 			distance_x[j] = (playershot[j].x) - (enemy[i].x + 24);
 			distance_y[j] = (playershot[j].y) - (enemy[i].y + 30);
 			range[j] = sqrt(distance_x[j] * distance_x[j] + distance_y[j] * distance_y[j]);
-			/////////////////////////////////////////////////////////////////////////////////////
-			//“–‚½‚è”»’èi‰~j//////////////////////////////////////////////////////////////////////
+
+			//“–‚½‚è”»’èi‰~j
 			if (range[j] <= 20) {
 				playershot[j].flag = 0;
 				enemy[i].hp -= playershot[j].power;
@@ -47,8 +30,6 @@ int collision1(Enemy_status enemy[], BaseShot playershot[], int i) {
 }
 //“G’e‚Æ©‹@
 int collision2(BaseUnit player, Enemy_shot enemyshot[]) {
-
-	/////’Ç‰Á•Ï”(“–‚½‚è”»’è—p)/////////////////////////////////
 	float distance_x2[EMAXSHOT], distance_y2[EMAXSHOT], range2[EMAXSHOT];
 
 	for (int j = 0; j < EMAXSHOT; j++) {
@@ -58,7 +39,7 @@ int collision2(BaseUnit player, Enemy_shot enemyshot[]) {
 			distance_y2[j] = (player.y) - (enemyshot[j].y + 30);
 			if (distance_y2[j] < 0) distance_y2[j] *= -1;
 			range2[j] = sqrt(distance_x2[j] * distance_x2[j] + distance_y2[j] * distance_y2[j]);
-			
+
 			if (range2[j] <= 15) {
 				enemyshot[j].flag = 0;
 				return 1;
@@ -88,7 +69,7 @@ int collision3(BaseUnit player, Enemy_status enemy[], int i) {
 }
 
 //“G‚Æ©‹@Œ•
-int collision4(BaseUnit player, Enemy_status enemy[], int i) {//BaseUnit player ‚ğ Basesword playersword‚É•ÏX
+int collision4(BaseSword player, Enemy_status enemy[], int i) {//BaseUnit player ‚ğ Basesword playersword‚É•ÏX
 	float distance_x4[ENEMYMAX], distance_y4[ENEMYMAX], range4[ENEMYMAX];
 
 	for (int j = 0; j < ENEMYMAX; j++) {
@@ -96,7 +77,7 @@ int collision4(BaseUnit player, Enemy_status enemy[], int i) {//BaseUnit player 
 		if (enemy[i].flag == 1) {  //if(enemy[i].flag == 1 && playersword.flag == 1) ‚É•ÏX
 			distance_x4[j] = (player.x + 25) - (enemy[i].x + 24);
 			if (distance_x4[j] < 0) distance_x4[j] *= -1;
-			distance_y4[j] = (player.y) - (enemy[i].y + 30);
+			distance_y4[j] = (player.y) - (enemy[i].y + 90);
 			if (distance_y4[j] < 0) distance_y4[j] *= -1;
 			range4[j] = sqrt(distance_x4[j] * distance_x4[j] + distance_y4[j] * distance_y4[j]);
 
@@ -152,7 +133,7 @@ void enemy_act0(int i) {
 		/////////////////////////////////////////////
 
 	}
-	return ;
+	return;
 }
 
 void enemy_act1(int i) {
@@ -160,26 +141,27 @@ void enemy_act1(int i) {
 	double x = (player.x - enemyshot[i].x) * (player.x - enemyshot[i].x);
 	double y = (player.y - enemy[i].y) * (player.y - enemy[i].y);
 	if (enemy[i].y >= -70 && enemy[i].y <= 820 && t % 10 == 0) {
-		createEnemyShot(enemy[i].x, enemy[i].y, 100, 1, 5.0, 3, 0);	
+		//createEnemyShot(enemy[i].x, enemy[i].y, 100, 1, 5.0, 3, 0);	
+		//createEnemyShot(enemy[i].x, enemy[i].y, 10, 4, 3, 2, atan2(player.y - enemy[i].y, player.x - enemy[i].x));
 	}
 	enemy[i].y += enemy[i].speed;
-		//“–‚½‚è”»’èˆ—//////////////////////////////
-		if (collision1(enemy, playershot, i) == 1) {
-			score++;
-		}
-		if (collision2(player, enemyshot) == 1) {
-			player.hp--;
-			hp_g += 6;
-		}
-		if (collision3(player, enemy, i) == 1) {
-			player.hp--;
-			hp_g += 6;
-		}
-		if (collision4(player, enemy, i) == 1) {
-			score += 100;
-		}
-		/////////////////////////////////////////////
-	return ;
+	//“–‚½‚è”»’èˆ—//////////////////////////////
+	if (collision1(enemy, playershot, i) == 1) {
+		score++;
+	}
+	if (collision2(player, enemyshot) == 1) {
+		player.hp--;
+		hp_g += 6;
+	}
+	if (collision3(player, enemy, i) == 1) {
+		player.hp--;
+		hp_g += 6;
+	}
+	if (collision4(playersword, enemy, i) == 1) {
+		score += 100;
+	}
+	/////////////////////////////////////////////
+	return;
 }
 
 void enemy_act2(int i) {
@@ -187,7 +169,9 @@ void enemy_act2(int i) {
 	if (enemy[i].y >= -70 && enemy[i].y <= 820) {
 		if (enemy[i].y >= 20 && t % 5 == 0) {
 			//createEnemyShot(enemy[i].x, enemy[i].y, 500, 4, 3, 1, atan2(enemy[i].y, enemy[i].x));
-			createEnemyShot(enemy[i].x, enemy[i].y, 500, 2, 3, 2, atan2(player.y - enemy[i].y, player.x - enemy[i].x));
+			//createEnemyShot(enemy[i].x, enemy[i].y, 500, 2, 3, 2, atan2(player.y - enemy[i].y, player.x - enemy[i].x));
+			createEnemyShot(enemy[i].x, enemy[i].y, 300, 5, 3, 2, atan2(player.y - enemy[i].y, player.x - enemy[i].x));
+
 		}
 		enemy[i].y += enemy[i].speed;
 
@@ -206,32 +190,29 @@ void enemy_act2(int i) {
 		}
 		/////////////////////////////////////////////
 	}
-	return ;
+	return;
 }
 
 void enemy_act3(int i) {
-	return ;
+	return;
 }
 
 void enemy_act4(int i) {
-	return ;
+	return;
 }
 
 void enemy_act5(int i) {
-	return ;
+	return;
 }
 
 void enemy_act6(int i) {
-	return ;
+	return;
 }
 
 void enemy_act7(int i) {
-	return ;
+	return;
 }
 
 void enemy_act8(int i) {
-	if (!(enemy[i].y >= 200 && 205 > enemy[i].y)) {
-		enemy[i].y += enemy[i].speed;
-	}
-	return ;
+	return;
 }
