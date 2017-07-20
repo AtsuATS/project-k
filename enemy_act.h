@@ -2,7 +2,7 @@
 #define ENEMY_ACT_H
 
 
-void enemy_act0(Enemy_status *enemy,float deg);
+void enemy_act0(Enemy_status *enemy, float deg);
 void enemy_act1(void);
 void enemy_act2(void);
 void enemy_act3(Enemy_status *enemy);

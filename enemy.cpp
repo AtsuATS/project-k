@@ -1,7 +1,7 @@
 #include "DxLib.h"
 #include "grobal.h"
 #include "enemy_act.h"
-#include "enemy_shot.h"
+#include "enemyshot.h"
 #include <math.h>
 
 Enemy_status enemy[ENEMYMAX];
@@ -29,7 +29,7 @@ static int t = 0;
 
 void enemy_Initialize() {
 
-	enemy[0].hp  = 1;  enemy[0].speed  = 2;  enemy[0].x  = 155;  enemy[0].y  = -70;  enemy[0].flag  = 1;   enemy[0].type = 1;
+	enemy[0].hp  = 1;  enemy[0].speed  = 2;  enemy[0].x  = 155;  enemy[0].y  = 300;  enemy[0].flag  = 1;   enemy[0].type = 1;
 	enemy[1].hp  = 50; enemy[1].speed  = 0;  enemy[1].x  = 255;  enemy[1].y  = 200;  enemy[1].flag  = 1;   enemy[1].type = 2;
 	enemy[2].hp  = 5;  enemy[2].speed  = 2;  enemy[2].x  = 355;  enemy[2].y  = -70;  enemy[2].flag  = 1;   enemy[2].type = 3;
 	enemy[3].hp  = 1;  enemy[3].speed  = 3;  enemy[3].x  = 155;  enemy[3].y  = -70;  enemy[3].flag  = 0;   enemy[3].type = 1;
@@ -58,20 +58,17 @@ void enemy_Initialize() {
 }
 
 void enemy_Update() {
-	
-		//s“®§Œä
-		//if (t >= 200 && enemy[i].flag == 1) enemy_act0(i);
-	if (t >= 100 && enemy[1].flag == 1) enemy_act1(1);
-	if (t == 650) enemy[1].flag = 0;
-	if (t >= 700 && enemy[0].flag == 1) enemy_act1(0);
-	if (t >= 700 && enemy[2].flag == 1) enemy_act1(2);
-	
-		
+
+	if (t>=100&&enemy[0].flag==1) {
+		if(t<200)enemy_act0(&enemy[0], 0);
+		else if(t<300)enemy_act0(&enemy[0], 270);
+		else if (t < 400)enemy_act0(&enemy[0], 180);
+		else enemy_act0(&enemy[0], t);
+	}
+
 	for (int i = 0; i < ENEMYMAX; i++) {
 		if (enemy[i].x < -80 || 800 < enemy[i].x || enemy[i].y < -80 || 600 < enemy[i].y) enemy[i].flag = 0;
 		if (enemy[i].hp <= 0) enemy[i].flag = 0;
-
-		enemy[i].cnt++;
 	}
 
 	
