@@ -9,7 +9,7 @@ typedef struct _BaseEnemy {
 	int speed;
 	int cnt;
 	bool flag;
-	bool act[2];
+	bool act[3];
 	float deg;
 }Enemy_status;
 
