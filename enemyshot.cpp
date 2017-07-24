@@ -1,6 +1,6 @@
 #include "DxLib.h"
 #include "grobal.h"
-#include "enemy_shot.h"
+#include "enemyshot.h"
 #include "enemy_act.h"
 #include "BaseUnit.h"
 #define _USE_MATH_DEFINES

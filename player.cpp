@@ -1,7 +1,7 @@
 #include "DxLib.h"
 #include "BaseUnit.h"
 #include "key.h"
-#include "player_sword.h"
+#include "playersword.h"
 #include "playershot.h"
 #include "grobal.h"
 #include <math.h>

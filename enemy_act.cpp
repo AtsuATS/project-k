@@ -21,3 +21,14 @@ void enemy_act0(Enemy_status *enemy, float deg) {
 	return;
 }
 
+void enemy_act1(Enemy_status *enemy) {
+	if (enemy->act[1] == 0) {
+		enemy->deg = to_deg(atan2f(enemy->y - player.y, enemy->x - player.x))+180;
+		enemy->act[1] = 1;
+		enemy_act0(enemy, enemy->deg);
+	}
+
+	enemy_act0(enemy,enemy->deg);
+
+	return;
+}

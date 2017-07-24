@@ -4,9 +4,9 @@
 #include "BaseUnit.h"
 #include "background.h"
 #include "BaseEnemy.h"
-#include "player_sword.h"
+#include "playersword.h"
 #include "enemy.h"
-#include "enemy_shot.h"
+#include "enemyshot.h"
 #include "grobal.h"
 #include "scoreboard.h"
 

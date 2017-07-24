@@ -4,7 +4,7 @@
 #include "DxLib.h"
 #include <math.h>
 #include "BaseUnit.h"
-#include "player_sword.h"
+#include "playersword.h"
 #include "calculation.h"
 #define R 40
 

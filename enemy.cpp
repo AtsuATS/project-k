@@ -8,7 +8,7 @@ Enemy_status enemy[ENEMYMAX];
 
 int enemy_R, enemy_G, enemy_B;
 int score = 0;
-static int t = 0;
+int t = 0;
 
 /*void createEnemy(float ex, float ey, int n, int s, int t, int hp, int num) { //nは敵の数,sはスピード,tはタイプ,hpは体力,numは敵番号
 	int a = 0;//座標ずらしのための関数
@@ -31,7 +31,7 @@ void enemy_Initialize() {
 
 	enemy[0].hp  = 1;  enemy[0].speed  = 2;  enemy[0].x  = 155;  enemy[0].y  = 300;  enemy[0].flag  = 1;   enemy[0].type = 1;
 	enemy[1].hp  = 50; enemy[1].speed  = 0;  enemy[1].x  = 255;  enemy[1].y  = 200;  enemy[1].flag  = 1;   enemy[1].type = 2;
-	enemy[2].hp  = 5;  enemy[2].speed  = 2;  enemy[2].x  = 355;  enemy[2].y  = -70;  enemy[2].flag  = 1;   enemy[2].type = 3;
+	enemy[2].hp  = 5;  enemy[2].speed  = 2;  enemy[2].x  = 355;  enemy[2].y  = 400;  enemy[2].flag  = 1;   enemy[2].type = 3;
 	enemy[3].hp  = 1;  enemy[3].speed  = 3;  enemy[3].x  = 155;  enemy[3].y  = -70;  enemy[3].flag  = 0;   enemy[3].type = 1;
 	enemy[4].hp  = 3;  enemy[4].speed  = 3;  enemy[4].x  = 255;  enemy[4].y  = -70;  enemy[4].flag  = 0;   enemy[4].type = 2;
 	enemy[5].hp  = 5;  enemy[5].speed  = 3;  enemy[5].x  = 355;  enemy[5].y  = -70;  enemy[5].flag  = 0;   enemy[5].type = 3;
@@ -65,6 +65,11 @@ void enemy_Update() {
 		else if (t < 400)enemy_act0(&enemy[0], 180);
 		else enemy_act0(&enemy[0], t);
 	}
+	
+	if (t >= 100 && enemy[2].flag == 1) {
+		enemy_act1(&enemy[2]);
+	}
+
 
 	for (int i = 0; i < ENEMYMAX; i++) {
 		if (enemy[i].x < -80 || 800 < enemy[i].x || enemy[i].y < -80 || 600 < enemy[i].y) enemy[i].flag = 0;
