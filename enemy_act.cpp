@@ -59,21 +59,41 @@ void enemy_act2(Enemy_status *enemy) {
 
 //下から現れて(この場合は)y座標100を切った時点で回転、下に消える。
 //引数を設ければ折り返しの座標や、方向が指定可能になる
-void enemy_act3(Enemy_status *enemy) {
-	if (enemy->act[3] == 0) {
-		enemy->y -= enemy->speed;
-		if (enemy->y < 100) {
-			enemy->deg = 270;
-			enemy->act[3] = 1;
+void enemy_act3(Enemy_status *enemy ,char direction) {
+	if (direction == 'l') {
+		if (enemy->act[3] == 0) {
+			enemy->y -= enemy->speed;
+			if (enemy->y < 100) {
+				enemy->deg = 270;
+				enemy->act[3] = 1;
+			}
+		}
+		else if (enemy->act[3] == 1) {
+			if (enemy->deg > 90) {
+				enemy_act0(enemy, enemy->deg);
+				enemy->deg -= 2;
+			}
+			else {
+				enemy->y += enemy->speed;
+			}
 		}
 	}
-	else if (enemy->act[3] == 1) {
-		if (enemy->deg > 90) {
-			enemy_act0(enemy, enemy->deg);
-			enemy->deg -= 2;
+	else if (direction == 'r') {
+		if (enemy->act[3] == 0) {
+			enemy->y -= enemy->speed;
+			if (enemy->y < 100) {
+				enemy->deg = -90;
+				enemy->act[3] = 1;
+			}
 		}
-		else {
-			enemy->y += enemy->speed;
+		else if (enemy->act[3] == 1) {
+			if (enemy->deg < 90) {
+				enemy_act0(enemy, enemy->deg);
+				enemy->deg += 2;
+			}
+			else {
+				enemy->y += enemy->speed;
+			}
 		}
 	}
 	return;
