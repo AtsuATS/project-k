@@ -36,6 +36,7 @@ void enemy_act1(Enemy_status *enemy) {
 }
 
 //¶‚©‚çŒ»‚ê‚Ä’†S‚Å‰º•ûŒü‚É1‰ñ“]‚Ì‚¿‚É‰E‚ÉÁ‚¦‚é
+//V‚½‚Éˆø”‚ğİ‚¯‚ê‚Î‰ñ“]‚Ì•ûŒü‚ğw’è‰Â”\
 void enemy_act2(Enemy_status *enemy) {
 	if (enemy->act[2]==0) {
 			enemy->x += enemy->speed;
@@ -47,11 +48,62 @@ void enemy_act2(Enemy_status *enemy) {
 	else if (enemy->act[2] == 1) {
 		if (enemy->deg < 360) {
 			enemy_act0(enemy, enemy->deg);
-			enemy->deg+=1.5;
+			enemy->deg+=5;
 		}
 		else {
 			enemy->x += enemy->speed;
 		}
 	}
+	return;
 }
 
+//‰º‚©‚çŒ»‚ê‚Ä(‚±‚Ìê‡‚Í)yÀ•W100‚ğØ‚Á‚½“_‚Å‰ñ“]A‰º‚ÉÁ‚¦‚éB
+//ˆø”‚ğİ‚¯‚ê‚ÎÜ‚è•Ô‚µ‚ÌÀ•W‚âA•ûŒü‚ªw’è‰Â”\‚É‚È‚é
+void enemy_act3(Enemy_status *enemy) {
+	if (enemy->act[3] == 0) {
+		enemy->y -= enemy->speed;
+		if (enemy->y < 100) {
+			enemy->deg = 270;
+			enemy->act[3] = 1;
+		}
+	}
+	else if (enemy->act[3] == 1) {
+		if (enemy->deg > 90) {
+			enemy_act0(enemy, enemy->deg);
+			enemy->deg -= 2;
+		}
+		else {
+			enemy->y += enemy->speed;
+		}
+	}
+	return;
+}
+
+
+//‚­‚Ë‚­‚Ë(‰ü—Ç—\’è)
+void enemy_act4(Enemy_status *enemy) {
+	if (enemy->act[4] == 0) {
+		enemy_act0(enemy, enemy->deg);
+		enemy->deg += 5;
+		if (enemy->deg >= 180){
+			enemy->act[4] = 1;
+		}
+	}
+	else if (enemy->act[4] == 1) {
+		enemy_act0(enemy, enemy->deg);
+		enemy->deg -= 5;
+		if (enemy->deg <= 0) {
+			enemy->act[4] = 0;
+		}
+	}
+	return;
+}
+
+//~‚Ü‚é
+void enemy_act5(Enemy_status *enemy) {
+	if (enemy->act[5] == 0) {
+		enemy->y += enemy->speed;
+		if (enemy->y >= 200)enemy->act[5] = 1;
+	}
+	return;
+}

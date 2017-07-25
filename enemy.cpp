@@ -32,10 +32,10 @@ void enemy_Initialize() {
 	enemy[0].hp  = 1;  enemy[0].speed  = 2;  enemy[0].x  = 155;  enemy[0].y  = 300;  enemy[0].flag  = 1;   enemy[0].type = 1;
 	enemy[1].hp  = 50; enemy[1].speed  = 0;  enemy[1].x  = 255;  enemy[1].y  = 200;  enemy[1].flag  = 1;   enemy[1].type = 2;
 	enemy[2].hp  = 5;  enemy[2].speed  = 2;  enemy[2].x  = 355;  enemy[2].y  = 400;  enemy[2].flag  = 1;   enemy[2].type = 3;
-	enemy[3].hp  = 1;  enemy[3].speed  = 3;  enemy[3].x  = 155;  enemy[3].y  = -70;  enemy[3].flag  = 0;   enemy[3].type = 1;
-	enemy[4].hp  = 3;  enemy[4].speed  = 3;  enemy[4].x  = 255;  enemy[4].y  = -70;  enemy[4].flag  = 0;   enemy[4].type = 2;
-	enemy[5].hp  = 5;  enemy[5].speed  = 3;  enemy[5].x  = 355;  enemy[5].y  = -70;  enemy[5].flag  = 0;   enemy[5].type = 3;
-	enemy[6].hp  = 1;  enemy[6].speed  = 3;  enemy[6].x  = 155;  enemy[6].y  = -70;  enemy[6].flag  = 0;   enemy[6].type = 1;
+	enemy[3].hp  = 1;  enemy[3].speed  = 3;  enemy[3].x  = -70;  enemy[3].y  = 300;  enemy[3].flag  = 1;   enemy[3].type = 1;
+	enemy[4].hp  = 3;  enemy[4].speed  = 3;  enemy[4].x  = 255;  enemy[4].y  = 600;  enemy[4].flag  = 1;   enemy[4].type = 2;
+	enemy[5].hp  = 5;  enemy[5].speed  = 3;  enemy[5].x  = 275;  enemy[5].y  =   0;  enemy[5].flag  = 1;   enemy[5].type = 3;
+	enemy[6].hp  = 1;  enemy[6].speed  = 3;  enemy[6].x  = 275;  enemy[6].y  = -70;  enemy[6].flag  = 1;   enemy[6].type = 1;
 	enemy[7].hp  = 3;  enemy[7].speed  = 3;  enemy[7].x  = 255;  enemy[7].y  = -70;  enemy[7].flag  = 0;   enemy[7].type = 2;
 	enemy[8].hp  = 5;  enemy[8].speed  = 3;  enemy[8].x  = 355;  enemy[8].y  = -70;  enemy[8].flag  = 0;   enemy[8].type = 3;
 	enemy[9].hp  = 1;  enemy[9].speed  = 3;  enemy[9].x  = 155;  enemy[9].y  = -70;  enemy[9].flag  = 0;   enemy[9].type = 1;
@@ -68,6 +68,22 @@ void enemy_Update() {
 	
 	if (t >= 100 && enemy[2].flag == 1) {
 		enemy_act1(&enemy[2]);
+	}
+
+	if (t >= 100 && enemy[3].flag == 1) {
+		enemy_act2(&enemy[3]);
+	}
+
+	if (t >= 100 && enemy[4].flag == 1) {
+		enemy_act3(&enemy[4]);
+	}
+
+	if (t >= 100 && enemy[5].flag == 1) {
+		enemy_act4(&enemy[5]);
+	}
+
+	if (t >= 100 && enemy[6].flag == 1) {
+		enemy_act5(&enemy[6]);
 	}
 
 
