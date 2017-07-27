@@ -4,15 +4,16 @@
 #include "BaseUnit.h"
 #include "background.h"
 #include "BaseEnemy.h"
-#include "playersword.h"
+#include "player_sword.h"
 #include "enemy.h"
-#include "enemyshot.h"
+#include "enemy_shot.h"
 #include "grobal.h"
 #include "scoreboard.h"
 
 
 //‰Šú‰»
 void stage_Initialize() {
+	PlaySoundFile("sozai\\BGM\\testBGM.wav", DX_PLAYTYPE_LOOP);
 	background_Initialize();
 	player_Initialize();
 	playershot_Initialize();
@@ -45,6 +46,7 @@ void stage_Draw() {
 
 //I—¹ˆ—‚ğ‚·‚é
 void stage_Finalize() {
+	StopSoundFile();
 	enemyshot_Finalize();
 	background_Finalize();
 	player_Finalize();

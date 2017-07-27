@@ -13,7 +13,7 @@ void createPlayerShot(float px, float py) {
 			playershot[i].y = py;
 			playershot[i].speed = 5;
 			playershot[i].flag = 1;
-			playershot[i].power = 5;
+			playershot[i].power = 1;
 			return;
 		}
 	}
@@ -21,7 +21,7 @@ void createPlayerShot(float px, float py) {
 
 //‰Šú‰»
 void playershot_Initialize() {
-	playershot_GF = LoadGraph("sozai\\GF\\Â‹Ê‰¼.png");
+	playershot_GF = LoadGraph("sozai\\GF\\shot.png");
 }
 
 //“®‚«‚ğŒvZ‚·‚é
@@ -42,9 +42,7 @@ void playershot_Update() {
 void playershot_Draw() {
 	for (int i = 0; i < PMAXSHOT; i++) {
 		if (playershot[i].flag == 1) {
-			DrawCircle(playershot[i].x, playershot[i].y, 10, GetColor(0, 0, 255), TRUE);
 			DrawRotaGraph(playershot[i].x, playershot[i].y, 1, 0, playershot_GF, TRUE);
-			//DrawBox(playershot[i].x - 5, playershot[i].y - 5, playershot[i].x + 5,  playershot[i].y + 5, GetColor(0, 0, 255), TRUE);
 		}
 		
 	}

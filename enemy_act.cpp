@@ -1,7 +1,7 @@
 #include "DxLib.h"
 #include "grobal.h"
 #include "enemy.h"
-#include "enemyshot.h"
+#include "enemy_shot.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include "calculation.h"
@@ -11,7 +11,7 @@
 //引数degの方向にenemy->speedで進む
 void enemy_act0(Enemy_status *enemy, float deg) {
 
-	float A_a, sine, cosine;
+	float sine, cosine;
 
 	cosine = cos(to_rad(deg));
 	sine = sin(to_rad(deg));
@@ -59,41 +59,31 @@ void enemy_act2(Enemy_status *enemy) {
 
 //下から現れて(この場合は)y座標100を切った時点で回転、下に消える。
 //引数を設ければ折り返しの座標や、方向が指定可能になる
-void enemy_act3(Enemy_status *enemy ,char direction) {
-	if (direction == 'l') {
-		if (enemy->act[3] == 0) {
-			enemy->y -= enemy->speed;
-			if (enemy->y < 100) {
-				enemy->deg = 270;
-				enemy->act[3] = 1;
-			}
-		}
-		else if (enemy->act[3] == 1) {
-			if (enemy->deg > 90) {
-				enemy_act0(enemy, enemy->deg);
-				enemy->deg -= 2;
-			}
-			else {
-				enemy->y += enemy->speed;
-			}
+void enemy_act3(Enemy_status *enemy, char c) {
+	if (enemy->act[3] == 0) {
+		enemy->y -= enemy->speed;
+		if (enemy->y < 100) {
+			if (c == 'l') enemy->deg = 270;
+			if (c == 'r') enemy->deg = -90;
+			enemy->act[3] = 1;
 		}
 	}
-	else if (direction == 'r') {
-		if (enemy->act[3] == 0) {
-			enemy->y -= enemy->speed;
-			if (enemy->y < 100) {
-				enemy->deg = -90;
-				enemy->act[3] = 1;
-			}
+	else if (enemy->act[3] == 1 && c == 'l') {
+		if (enemy->deg > 90) {
+			enemy_act0(enemy, enemy->deg);
+			enemy->deg -= 4;
 		}
-		else if (enemy->act[3] == 1) {
-			if (enemy->deg < 90) {
-				enemy_act0(enemy, enemy->deg);
-				enemy->deg += 2;
-			}
-			else {
-				enemy->y += enemy->speed;
-			}
+		else {
+			enemy->y += enemy->speed;
+		}
+	}
+	else if (enemy->act[3] == 1 && c == 'r') {
+		if (enemy->deg < 90) {
+			enemy_act0(enemy, enemy->deg);
+			enemy->deg += 4;
+		}
+		else {
+			enemy->y += enemy->speed;
 		}
 	}
 	return;

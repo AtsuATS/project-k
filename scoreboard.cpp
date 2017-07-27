@@ -8,7 +8,7 @@ void scoreboard_Initialize(void) {
 	score_board = LoadGraph("sozai\\GF\\score_board.png");
 }
 
-//スコアボード描写
+//スコアボード描画
 void scoreboard_Draw(void) {
 	DrawGraph(550, 0, score_board, TRUE);
 	DrawBox(550, hp_g, 600, 600, GetColor(228, 228, 76), TRUE);

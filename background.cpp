@@ -8,7 +8,8 @@ static int bgmove_y;
 //”wŒi‰Šú‰»
 void background_Initialize(void) {
 	int bgmove_y = 0;
-	GHandle = LoadGraph("sozai\\GF\\background.png");
+	GHandle = LoadGraph("sozai\\GF\\back_ground.png");
+
 }
 
 //”wŒiXV
@@ -20,8 +21,9 @@ void background_Update(void) {
 
 //”wŒi•`Ê
 void background_Draw(void) {
-	DrawGraph(-250, bgmove_y, GHandle, TRUE);
-	DrawGraph(-250, bgmove_y-600, GHandle, TRUE);
+	DrawGraph(0, bgmove_y, GHandle, TRUE);
+	DrawGraph(0, bgmove_y-600, GHandle, TRUE);
+
 }
 
 //ˆ—‚ğI—¹‚·‚é

@@ -1,7 +1,7 @@
 #include "DxLib.h"
 #include "BaseUnit.h"
 #include "key.h"
-#include "playersword.h"
+#include "player_sword.h"
 #include "playershot.h"
 #include "grobal.h"
 #include <math.h>
@@ -94,16 +94,11 @@ void player_Update() {
 			PShotPushCnt = 0;
 		}
 	}
-
+	
 	//í«â¡(Ç‚ÇÁÇÍÇΩÇ∆Ç´ÇÃèàóù)
 	if (player.hp <= 0) {
+		player.hp = 0;
 		player.flag = 0;
-		player.flag = 1;
-		player.hp = 100;
-		hp_g = 0;
-		player.x = 275;
-		player.y = 500;
-		
 	}
 
 	if (keyboard_Get(KEY_INPUT_Z) > 0) {
@@ -130,12 +125,7 @@ void player_Update() {
 //ï`âÊÇ∑ÇÈ
 void player_Draw() {
 	if (player.flag == 1) {
-		DrawCircle(player.x, player.y, 10, GetColor(255, 255, 255), TRUE);
 		DrawRotaGraphF(player.x, player.y, 1, 0, player_GF, TRUE);
-		DrawFormatString(650, 90, GetColor(0, 255, 0), "HP %d", player.hp);
-		DrawBox(550, hp_g, 600, 600, GetColor(200, 0, 0), TRUE);
-		DrawBox(player.x, player.y -2, player.x + 50, player.y + 2 , GetColor(200, 0, 0), TRUE);
-		
 	}
 }
 

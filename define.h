@@ -1,6 +1,6 @@
-#define ENEMYMAX 21 //敵の最大表示数
-#define EMAXSHOT 50 //弾の最大表示数
-#define PMAXSHOT 21
+#define ENEMYMAX 60 //敵の最大表示数
+#define EMAXSHOT 500 //弾の最大表示数
+#define PMAXSHOT 20
 
 #include "BaseEnemy.h"
 #include "BaseUnit.h"
