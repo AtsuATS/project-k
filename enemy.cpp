@@ -2,6 +2,7 @@
 #include "grobal.h"
 #include "enemy_act.h"
 #include "enemy_shot.h"
+#define _USE_MATH_DEFINES
 #include <math.h>
 
 Enemy_status enemy[ENEMYMAX];
@@ -74,23 +75,19 @@ int collision3(BaseUnit player, Enemy_status enemy[], int i) {
 }
 
 //“G‚Æ©‹@Œ•
-int collision4(BaseSword player, Enemy_status enemy[], int i) {//BaseUnit player ‚ğ Basesword playersword‚É•ÏX
-	float distance_x4[ENEMYMAX], distance_y4[ENEMYMAX], range4[ENEMYMAX];
+int collision4(BaseSword playersword, Enemy_status enemy[], int i) {//BaseUnit player ‚ğ Basesword playersword‚É•ÏX
+	float distance_x4[ENEMYMAX], distance_y4[ENEMYMAX];
+	float psx = playersword.x + 40 * cos(NOWDIGANGLE * 180 / M_PI);
+	float psy = playersword.y + 40 * sin(NOWDIGANGLE * 180 / M_PI);
 
 	for (int j = 0; j < ENEMYMAX; j++) {
-
 		if (enemy[i].flag == 1 && playersword.flag == 1) {  //if(enemy[i].flag == 1 && playersword.flag == 1) ‚É•ÏX
-			distance_x4[j] = (player.x + 25) - (enemy[i].x + 24);
+			distance_x4[j] = (psx) - (enemy[i].x + 24);
 			if (distance_x4[j] < 0) distance_x4[j] *= -1;
-			distance_y4[j] = (player.y) - (enemy[i].y + 90);
+			distance_y4[j] = (psy) - (enemy[i].y + 30);
 			if (distance_y4[j] < 0) distance_y4[j] *= -1;
-			range4[j] = sqrt(distance_x4[j] * distance_x4[j] + distance_y4[j] * distance_y4[j]);
-
-			if (distance_x4[j] < 0)distance_x4[j] *= -1;
-			if (distance_y4[j] < 0)distance_y4[j] *= -1;
 
 			if (distance_x4[j] < 40 && distance_y4[j] < 15) {
-				enemy[i].hp -= 5;
 				return 1;
 			}
 		}
@@ -266,16 +263,16 @@ void enemy_Update() {
 	
 	//5
 	if (t >= 1950 && enemy[27].flag == 1) enemy_act3(&enemy[27], 'l');
-	if (t >= 1960 && enemy[28].flag == 1) enemy_act3(&enemy[28], 'l');
-	if (t >= 1970 && enemy[29].flag == 1) enemy_act3(&enemy[29], 'l');
-	if (t >= 1980 && enemy[30].flag == 1) enemy_act3(&enemy[30], 'l');
-	if (t >= 1990 && enemy[31].flag == 1) enemy_act3(&enemy[31], 'l');
+	if (t >= 1965 && enemy[28].flag == 1) enemy_act3(&enemy[28], 'l');
+	if (t >= 1980 && enemy[29].flag == 1) enemy_act3(&enemy[29], 'l');
+	if (t >= 1995 && enemy[30].flag == 1) enemy_act3(&enemy[30], 'l');
+	if (t >= 2010 && enemy[31].flag == 1) enemy_act3(&enemy[31], 'l');
 
 	if (t >= 1950 && enemy[32].flag == 1) enemy_act3(&enemy[32], 'r');
-	if (t >= 1960 && enemy[33].flag == 1) enemy_act3(&enemy[33], 'r');
-	if (t >= 1970 && enemy[34].flag == 1) enemy_act3(&enemy[34], 'r');
-	if (t >= 1980 && enemy[35].flag == 1) enemy_act3(&enemy[35], 'r');
-	if (t >= 1990 && enemy[36].flag == 1) enemy_act3(&enemy[36], 'r');
+	if (t >= 1965 && enemy[33].flag == 1) enemy_act3(&enemy[33], 'r');
+	if (t >= 1980 && enemy[34].flag == 1) enemy_act3(&enemy[34], 'r');
+	if (t >= 1995 && enemy[35].flag == 1) enemy_act3(&enemy[35], 'r');
+	if (t >= 2010 && enemy[36].flag == 1) enemy_act3(&enemy[36], 'r');
 	
 
 	//6.1
@@ -359,6 +356,7 @@ void enemy_Update() {
 		if (enemy[19].flag == 1)createEnemyShot(enemy[19].x, enemy[19].y, 2, 6, 3, 2, 1.21);
 		if (enemy[20].flag == 1)createEnemyShot(enemy[20].x, enemy[20].y, 2, 6, 3, 2, 1.21);
 	}
+	//“¯‚¶‚±‚Æ‚ğŒã‚R‰ñ
 	
 	//4
 	if (t >= 1700 && t < 1790 && t % 30 == 0) {
@@ -370,6 +368,7 @@ void enemy_Update() {
 		if (enemy[25].flag == 1)createEnemyShot(enemy[25].x, enemy[25].y, 1, 4, 3, 3, atan2(enemy[25].y, enemy[25].x));
 		if (enemy[26].flag == 1)createEnemyShot(enemy[26].x, enemy[26].y, 1, 4, 3, 3, atan2(enemy[26].y, enemy[26].x));
 	}
+	//“¯‚¶‚±‚Æ‚à‚¤‚Q‰ñ
 
 	//5
 	if (t >= 2150 && t < 2400 && t % 60 == 0) {
@@ -427,28 +426,50 @@ void enemy_Update() {
 		}
 		if (collision2(player, enemyshot) == 1) {
 			if (enemyshot->type == 1) {
-				player.hp-=4;
-				hp_g += 24;
+				if (player.hp > 4) {
+					player.hp -= 4;
+					hp_g -= 8;
+				}
+				else {
+					player.hp = 0;
+				}
 			}
 			if (enemyshot->type == 2) {
-				player.hp-=2;
-				hp_g += 12;
+				if (player.hp > 2) {
+					player.hp -= 2;
+					hp_g -= 4;
+				}
+				else {
+					player.hp = 0;
+				}
 			}
 			if (enemyshot->type == 3) {
-				player.hp--;
-				hp_g += 6;
+				if (player.hp > 1) {
+					player.hp --;
+					hp_g -= 2;
+				}
+				else {
+					player.hp = 0;
+				}
 			}
 		}
 		if (collision3(player, enemy, i) == 1) {
-			player.hp--;
-			hp_g += 6;
+			if (player.hp > 2) {
+				player.hp--;
+				hp_g -= 2;
+			}
+			else {
+				player.hp = 0;
+			}
 		}
-		if (collision4(playersword, enemy, i) == 1) {
+		if (collision4(playersword, enemy, i) == 1 && enemy[i].cnt == 0) {
+			enemy[i].cnt = t;
+			enemy[i].hp -= 5;
 			score += 100;
 		}
+		if (t == enemy[i].cnt + 20)enemy[i].cnt = 0;
+		
 		/////////////////////////////////////////////////////////////
-		//enemy[i].cnt++;
-
 	}
 }
 
@@ -469,16 +490,21 @@ void enemy_Draw() {
 	}
 
 
-	//I—¹‚Ìˆ— 
+	//I—¹‚Ìˆ— ÅŒã‚Ì“G‚ªÁ‚¦‚é–”‚Í©‹@‘Ì—Í‚ª‚O‚É‚È‚Á‚½
 	if (enemy[46].flag == 0 && enemy[47].flag == 0 &&
 		enemy[48].flag == 0 && enemy[49].flag == 0 &&
 		enemy[50].flag == 0 && enemy[51].flag == 0 && enemy[52].flag == 0 || player.hp <= 0) {
 
 		finish_t++;;
 	}
-	if (finish_t >= 200) DrawFormatString(225, 300, GetColor(0, 255, 0), "YOUR SCORE %d", score);
-	if (finish_t >= 300 && hp_g < 600) {
-		hp_g += 6;
+	if (finish_t >= 200) {
+		DrawFormatString(225, 300, GetColor(0, 255, 0), "YOUR SCORE %d", score);
+		if (player.flag == 0)	DrawFormatString(235, 250, GetColor(255, 0, 0), "GAME OVER");
+		if (player.flag == 1)	DrawFormatString(235, 250, GetColor(255, 165, 0), "GAME CLEAR");
+
+	}
+	if (finish_t >= 300 && hp_g > 575) {
+		hp_g -= 2;
 		score += 10;
 	}
 	if (finish_t >= 550) DrawFormatString(225, 350, GetColor(0, 255, 0), "YOUR RANK ");

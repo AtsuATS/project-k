@@ -126,15 +126,15 @@ void enemyshot_Update() {
 void enemyshot_Draw() {
 	for (int i = 0; i < EMAXSHOT; i++) {
 		if (enemyshot[i].flag == 1 && enemyshot[i].type == 1) {
-			DrawCircle(enemyshot[i].x + 24, enemyshot[i].y + 30, 5, GetColor(255, 255, 255), TRUE);
+			//DrawCircle(enemyshot[i].x + 24, enemyshot[i].y + 30, 5, GetColor(255, 255, 255), TRUE);
 			DrawRotaGraph(enemyshot[i].x + 24, enemyshot[i].y + 30, 1, 0, enemyshot_GF1, TRUE);
 		}
 		if (enemyshot[i].flag == 1 && enemyshot[i].type == 2) {
-			DrawCircle(enemyshot[i].x + 24, enemyshot[i].y + 30, 5, GetColor(255, 255, 255), TRUE);
+			//DrawCircle(enemyshot[i].x + 24, enemyshot[i].y + 30, 5, GetColor(255, 255, 255), TRUE);
 			DrawRotaGraph(enemyshot[i].x + 24, enemyshot[i].y + 30, 1, 0, enemyshot_GF2, TRUE);
 		}
 		if (enemyshot[i].flag == 1 && enemyshot[i].type == 3) {
-			DrawCircle(enemyshot[i].x + 24, enemyshot[i].y + 30, 5, GetColor(255, 255, 255), TRUE);
+			//DrawCircle(enemyshot[i].x + 24, enemyshot[i].y + 30, 5, GetColor(255, 255, 255), TRUE);
 			DrawRotaGraph(enemyshot[i].x + 24, enemyshot[i].y + 30, 1, 0, enemyshot_GF3, TRUE);
 		}
 	}

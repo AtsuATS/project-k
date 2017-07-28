@@ -4,14 +4,15 @@
 #include "player_sword.h"
 #include "playershot.h"
 #include "grobal.h"
+#define _USE_MATH_DEFINES
 #include <math.h>
 
 BaseUnit player;
 int player_GF;
 static int PShotPushCnt;
-static int PSwordPushCut;
+static int PSwordPushCut_Z, PSwordPushCut_X;
 
-int hp_g = 0; //HPのゲージ
+int hp_g = 775; //HPのゲージ
 
 static int player_flag[4];//斜めかどうかを判断するためのフラグ
 
@@ -29,7 +30,7 @@ void player_Initialize() {
 	calx = caly = 0;
 
 	PShotPushCnt = 0;
-	PSwordPushCut = 0;
+	PSwordPushCut_Z = PSwordPushCut_X = 0;
 }
 
 //動きを計算する
@@ -84,7 +85,7 @@ void player_Update() {
 	}
 
 	if (keyboard_Get(KEY_INPUT_SPACE) > 0) {
-		if (PShotPushCnt % 100 == 0) {
+		if (PShotPushCnt % 100 == 0 && player.flag == 1) {
 			createPlayerShot(player.x, player.y);
 		}
 		PShotPushCnt++;
@@ -97,26 +98,29 @@ void player_Update() {
 	
 	//追加(やられたときの処理)
 	if (player.hp <= 0) {
+		hp_g = 575;
 		player.hp = 0;
 		player.flag = 0;
+		playershot->flag = 0;
 	}
 
 	if (keyboard_Get(KEY_INPUT_Z) > 0) {
-		if (PSwordPushCut % 10000 == 0) {
+		PSwordPushCut_Z++;
+		if (PSwordPushCut_Z <= 1 && player.flag == 1) {
 			createPlayerSword(player.x, player.y, 1);
 		}
-		PSwordPushCut++;
 	}
-	else if (keyboard_Get(KEY_INPUT_X) > 0) {
-		if (PSwordPushCut % 10000 == 0) {
+	else if(PSwordPushCut_Z != 0) {
+		PSwordPushCut_Z = 0;
+	}
+	if (keyboard_Get(KEY_INPUT_X) > 0) {
+		PSwordPushCut_X++;
+		if (PSwordPushCut_X <= 1 && player.flag == 1) {
 			createPlayerSword(player.x, player.y, 2);
 		}
-		PSwordPushCut++;
 	}
-	else {
-		if (PSwordPushCut != 0) {
-			PSwordPushCut = 0;
-		}
+	else if (PSwordPushCut_X != 0) {
+		PSwordPushCut_X = 0;
 	}
 	playersword_Update(player.x, player.y);
 }
@@ -126,6 +130,7 @@ void player_Update() {
 void player_Draw() {
 	if (player.flag == 1) {
 		DrawRotaGraphF(player.x, player.y, 1, 0, player_GF, TRUE);
+		//DrawBox(playersword.x, playersword.y, playersword.x + 40 * cos(NOWDIGANGLE * 180 / M_PI), playersword.y + 40 * sin(NOWDIGANGLE * 180 / M_PI), GetColor(222, 41, 0), TRUE);
 	}
 }
 
