@@ -31,7 +31,7 @@ void playershot_Update() {
 			playershot[i].y -= playershot[i].speed;
 		}
 
-		if (playershot[i].y <= -50) {
+		if (playershot[i].y <= -10) {
 			playershot[i].flag = 0;
 		}
 	}

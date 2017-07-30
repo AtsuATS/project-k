@@ -6,7 +6,7 @@ typedef struct _BaseUnit {
 	float y;
 	int hp;
 	int type;
-	int speed;
+	float speed;
 	bool flag;
 }BaseUnit;
 

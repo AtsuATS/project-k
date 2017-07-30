@@ -1,7 +1,7 @@
 #include "DxLib.h"
 #include "BaseUnit.h"
 #include "key.h"
-#include "player_sword.h"
+#include "playersword.h"
 #include "playershot.h"
 #include "grobal.h"
 #define _USE_MATH_DEFINES
@@ -11,9 +11,7 @@ BaseUnit player;
 int player_GF;
 static int PShotPushCnt;
 static int PSwordPushCut_Z, PSwordPushCut_X;
-
-int hp_g = 775; //HPのゲージ
-
+int hp_g;
 static int player_flag[4];//斜めかどうかを判断するためのフラグ
 
 static float calx, caly;
@@ -25,7 +23,9 @@ void player_Initialize() {
 	player.hp = 100;
 	player.x = 275;
 	player.y = 500;
-	player.speed = 5;
+	player.speed = 6.5;
+	hp_g = 575 + player.hp * 2; //HPのゲージ
+
 
 	calx = caly = 0;
 
@@ -84,7 +84,7 @@ void player_Update() {
 		caly = 0;
 	}
 
-	if (keyboard_Get(KEY_INPUT_SPACE) > 0) {
+	if (keyboard_Get(KEY_INPUT_LSHIFT) > 0 || keyboard_Get(KEY_INPUT_RSHIFT) > 0) {
 		if (PShotPushCnt % 100 == 0 && player.flag == 1) {
 			createPlayerShot(player.x, player.y);
 		}
@@ -97,10 +97,19 @@ void player_Update() {
 	}
 	
 	//追加(やられたときの処理)
-	if (player.hp <= 0) {
-		hp_g = 575;
-		player.hp = 0;
-		player.flag = 0;
+	if (enemy[46].flag == 1 || enemy[47].flag == 1 ||
+		enemy[48].flag == 1 || enemy[49].flag == 1 ||
+		enemy[50].flag == 1 || enemy[51].flag == 1 || enemy[52].flag == 1){
+		if (player.hp <= 0) {
+			player.hp = 0;
+			player.flag = 0;
+			playershot->flag = 0;
+		}
+	}
+	if (enemy[46].flag == 0 && enemy[47].flag == 0 &&
+		enemy[48].flag == 0 && enemy[49].flag == 0 &&
+		enemy[50].flag == 0 && enemy[51].flag == 0 && enemy[52].flag == 0) {
+		player.flag = 1;
 		playershot->flag = 0;
 	}
 

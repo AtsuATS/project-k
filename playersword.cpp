@@ -6,6 +6,7 @@
 #include "BaseUnit.h"
 #include "playersword.h"
 #include "calculation.h"
+#include "grobal.h"
 #define R 40
 
 
@@ -25,7 +26,7 @@ void createPlayerSword(float px, float py,int pattern) {
 			playersword.y = py+R*sin(to_rad(NOWDIGANGLE));
 			playersword.l_or_r = 'r';
 			playersword.pattern = pattern;
-			playersword.flame = 13;
+			playersword.flame = 8;
 			playersword.flag = 1;
 			NOWFLAME = 0;
 		}
@@ -38,7 +39,7 @@ void createPlayerSword(float px, float py,int pattern) {
 			playersword.x = px + R*cos(to_rad(playersword.sdig));
 			playersword.y = py + R*sin(to_rad(playersword.sdig));
 			playersword.l_or_r = 'l';
-			playersword.flame = 13;
+			playersword.flame = 8;
 			playersword.pattern = pattern;
 			playersword.flag = 1;
 			NOWFLAME = 0;
@@ -75,8 +76,9 @@ void playersword_Update(float px, float py) {
 
 //ï`âÊÇ∑ÇÈ
 void playersword_Draw() {
-	if (playersword.flag == 1)
-		DrawRotaGraph(playersword.x, playersword.y, 1, to_rad(NOWDIGANGLE+90), playersword_GF, TRUE);
+	if (playersword.flag == 1) {
+		DrawRotaGraph(playersword.x, playersword.y, 1, to_rad(NOWDIGANGLE + 90), playersword_GF, TRUE);
+	}
 }
 
 //èIóπèàóùÇÇ∑ÇÈ

@@ -16,13 +16,12 @@ void scoreboard_Draw(void) {
 	
 
 	DrawGraph(550, 0, score_board, TRUE);
-	if (player.hp > 50) DrawBox(575, 150, hp_g, 175, Green, TRUE);
-	if (player.hp <= 50 && player.hp > 20) DrawBox(575, 150, hp_g, 175, Yellow, TRUE);
-	if (player.hp <= 20) DrawBox(575, 150, hp_g, 175, Red, TRUE);
+	if (player.hp > 50) DrawBox(575, 110, hp_g, 135, Green, TRUE);
+	if (player.hp <= 50 && player.hp > 20) DrawBox(575, 110, hp_g, 135, Yellow, TRUE);
+	if (player.hp <= 20) DrawBox(575, 110, hp_g, 135, Red, TRUE);
 
-	DrawFormatString(650, 10, GetColor(255, 255, 255), "TIME %d", t);
-	DrawFormatString(650, 50, GetColor(0, 0, 255), "SCORE %d", score);
-	DrawFormatString(650, 90, GetColor(0, 255, 0), "HP %d", player.hp);
+	DrawFormatString(580, 40, GetColor(0, 0, 255), "SCORE %d", score);
+	DrawFormatString(580, 80, GetColor(0, 255, 0), "HP %d", player.hp);
 }
 
 //‰ð•ú

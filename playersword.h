@@ -1,4 +1,4 @@
-#ifndef  PLAYERSWORD_H
+#ifndef PLAYERSWORD_H
 #define PLAYERSWORD_H
 
 //create to Playersword

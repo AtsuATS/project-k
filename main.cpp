@@ -14,19 +14,24 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// while(裏画面を表画面に反映, メッセージ処理, 画面クリア)
 	//ここからゲームのループ
 	while (ScreenFlip() == 0 && ProcessMessage() == 0 && ClearDrawScreen() == 0) {
-		
 
-	 keyboard_Update();
+		keyboard_Update();
 
-	 //Update
-	 stage_Update();
+		//Update
+		stage_Update();
 
+		//Draw
+		stage_Draw();
 
-	 //Draw
-	 stage_Draw();
-
-	
-	 //ScreenFlip();
+		if (keyboard_Get(KEY_INPUT_X) > 0 && finish_t >= 500) break;
+		if (keyboard_Get(KEY_INPUT_Z) > 0 && finish_t >= 500) {
+			stage_Finalize();
+			stage_Initialize();
+			finish_t = 0;
+			t = 0;
+			score = 0;
+		}
+		//ScreenFlip();
 	}
 	//Fina
 	stage_Finalize();

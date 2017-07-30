@@ -1,7 +1,7 @@
 #include "DxLib.h"
 #include "grobal.h"
 #include "enemy.h"
-#include "enemy_shot.h"
+#include "enemyshot.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include "calculation.h"

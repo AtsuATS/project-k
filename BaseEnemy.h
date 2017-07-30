@@ -8,7 +8,7 @@ typedef struct _BaseEnemy {
 	int type;
 	int speed;
 	int act[6];
-	int cnt = 0;//無敵のz間のカウント
+	int cnt = 0;//無敵の間のカウント
 	bool flag;
 	float deg;
 }Enemy_status;

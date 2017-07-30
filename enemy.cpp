@@ -1,7 +1,7 @@
 #include "DxLib.h"
 #include "grobal.h"
 #include "enemy_act.h"
-#include "enemy_shot.h"
+#include "enemyshot.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
 
@@ -12,7 +12,6 @@ int score = 0;
 int t = 0;
 int finish_t = 0;//終わった時に動き出す
 
-//追加//////////////////////////////////////////////////////////////////////////////
 int collision1(Enemy_status enemy[], BaseShot playershot[], int i) {
 	float distance_x[ENEMYMAX], distance_y[ENEMYMAX], range[ENEMYMAX];
 
@@ -46,9 +45,17 @@ int collision2(BaseUnit player, Enemy_shot enemyshot[]) {
 			if (distance_y2[j] < 0) distance_y2[j] *= -1;
 			range2[j] = sqrt(distance_x2[j] * distance_x2[j] + distance_y2[j] * distance_y2[j]);
 
-			if (range2[j] <= 15) {
+			if (range2[j] <= 15 && enemyshot[j].type == 1) {
 				enemyshot[j].flag = 0;
-				return 1;
+				return 5;
+			}
+			else if (range2[j] <= 15 && enemyshot[j].type == 2) {
+				enemyshot[j].flag = 0;
+				return 3;
+			}
+			else if (range2[j] <= 15 && enemyshot[j].type == 3) {
+				enemyshot[j].flag = 0;
+				return 2;
 			}
 		}
 	}
@@ -87,7 +94,10 @@ int collision4(BaseSword playersword, Enemy_status enemy[], int i) {//BaseUnit p
 			distance_y4[j] = (psy) - (enemy[i].y + 30);
 			if (distance_y4[j] < 0) distance_y4[j] *= -1;
 
-			if (distance_x4[j] < 40 && distance_y4[j] < 15) {
+			if (psx > 530 || psx < 20 || psy > 590 || psy < 10)
+				return 0;
+
+			if (distance_x4[j] < 40 && distance_y4[j] < 13) {
 				return 1;
 			}
 		}
@@ -140,17 +150,17 @@ void enemy_Initialize() {
 	enemy[26].hp = 5;  enemy[26].speed = 3;  enemy[26].x = 550;  enemy[26].y = -70;  enemy[26].flag = 1;  enemy[26].type = 3;
 
 	//5 下から上がって回転
-	enemy[27].hp = 5;  enemy[27].speed = 3;  enemy[27].x = 175;  enemy[27].y = 600;  enemy[27].flag = 1;  enemy[27].type = 3;
-	enemy[28].hp = 5;  enemy[28].speed = 3;  enemy[28].x = 175;  enemy[28].y = 600;  enemy[28].flag = 1;  enemy[28].type = 3;
-	enemy[29].hp = 5;  enemy[29].speed = 3;  enemy[29].x = 175;  enemy[29].y = 600;  enemy[29].flag = 1;  enemy[29].type = 3;
-	enemy[30].hp = 5;  enemy[30].speed = 3;  enemy[30].x = 175;  enemy[30].y = 600;  enemy[30].flag = 1;  enemy[30].type = 3;
-	enemy[31].hp = 5;  enemy[31].speed = 3;  enemy[31].x = 175;  enemy[31].y = 600;  enemy[31].flag = 1;  enemy[31].type = 3;
+	enemy[27].hp = 5;  enemy[27].speed = 3;  enemy[27].x = 172;  enemy[27].y = 620;  enemy[27].flag = 1;  enemy[27].type = 3;
+	enemy[28].hp = 5;  enemy[28].speed = 3;  enemy[28].x = 172;  enemy[28].y = 620;  enemy[28].flag = 1;  enemy[28].type = 3;
+	enemy[29].hp = 5;  enemy[29].speed = 3;  enemy[29].x = 172;  enemy[29].y = 620;  enemy[29].flag = 1;  enemy[29].type = 3;
+	enemy[30].hp = 5;  enemy[30].speed = 3;  enemy[30].x = 172;  enemy[30].y = 620;  enemy[30].flag = 1;  enemy[30].type = 3;
+	enemy[31].hp = 5;  enemy[31].speed = 3;  enemy[31].x = 172;  enemy[31].y = 620;  enemy[31].flag = 1;  enemy[31].type = 3;
 
-	enemy[32].hp = 5;  enemy[32].speed = 3;  enemy[32].x = 355;  enemy[32].y = 600;  enemy[32].flag = 1;  enemy[32].type = 3;
-	enemy[33].hp = 5;  enemy[33].speed = 3;  enemy[33].x = 355;  enemy[33].y = 600;  enemy[33].flag = 1;  enemy[33].type = 3;
-	enemy[34].hp = 5;  enemy[34].speed = 3;  enemy[34].x = 355;  enemy[34].y = 600;  enemy[34].flag = 1;  enemy[34].type = 3;
-	enemy[35].hp = 5;  enemy[35].speed = 3;  enemy[35].x = 355;  enemy[35].y = 600;  enemy[35].flag = 1;  enemy[35].type = 3;
-	enemy[36].hp = 5;  enemy[36].speed = 3;  enemy[36].x = 355;  enemy[36].y = 600;  enemy[36].flag = 1;  enemy[36].type = 3;
+	enemy[32].hp = 5;  enemy[32].speed = 3;  enemy[32].x = 352;  enemy[32].y = 620;  enemy[32].flag = 1;  enemy[32].type = 3;
+	enemy[33].hp = 5;  enemy[33].speed = 3;  enemy[33].x = 352;  enemy[33].y = 620;  enemy[33].flag = 1;  enemy[33].type = 3;
+	enemy[34].hp = 5;  enemy[34].speed = 3;  enemy[34].x = 352;  enemy[34].y = 620;  enemy[34].flag = 1;  enemy[34].type = 3;
+	enemy[35].hp = 5;  enemy[35].speed = 3;  enemy[35].x = 352;  enemy[35].y = 620;  enemy[35].flag = 1;  enemy[35].type = 3;
+	enemy[36].hp = 5;  enemy[36].speed = 3;  enemy[36].x = 352;  enemy[36].y = 620;  enemy[36].flag = 1;  enemy[36].type = 3;
 
 	//6.1
 	enemy[37].hp = 5;  enemy[37].speed = 3;  enemy[37].x = -50;  enemy[37].y = 500;  enemy[37].flag = 1;  enemy[37].type = 3;
@@ -162,9 +172,9 @@ void enemy_Initialize() {
 	enemy[42].hp = 5;  enemy[42].speed = 3;  enemy[42].x = 550;  enemy[42].y = 500;  enemy[42].flag = 1;  enemy[42].type = 3;
 
 	//6.2
-	enemy[43].hp = 15;  enemy[43].speed = 4;  enemy[43].x = 2;   enemy[43].y = -70;  enemy[43].flag = 1;  enemy[43].type = 2;
-	enemy[44].hp = 15;  enemy[44].speed = 4;  enemy[44].x = 252;  enemy[44].y = -70;  enemy[44].flag = 1;  enemy[44].type = 2;
-	enemy[45].hp = 15;  enemy[45].speed = 4;  enemy[45].x = 502;  enemy[45].y = -70;  enemy[45].flag = 1;  enemy[45].type = 2;
+	enemy[43].hp = 15;  enemy[43].speed = 4;  enemy[43].x = 2;   enemy[43].y = -90;  enemy[43].flag = 1;  enemy[43].type = 2;
+	enemy[44].hp = 15;  enemy[44].speed = 4;  enemy[44].x = 252;  enemy[44].y = -90;  enemy[44].flag = 1;  enemy[44].type = 2;
+	enemy[45].hp = 15;  enemy[45].speed = 4;  enemy[45].x = 502;  enemy[45].y = -90;  enemy[45].flag = 1;  enemy[45].type = 2;
 
 	//7
 	enemy[46].hp = 5;  enemy[46].speed = 3;  enemy[46].x = 2;  enemy[46].y = -70;  enemy[46].flag = 1;  enemy[46].type = 3;
@@ -200,6 +210,17 @@ void enemy_Update() {
 	//円状の角度・・・・atan2(enemy[i].y, enemy[i].x)
 	//ばらまき・・・sqrt(x + y)
 	//nの引数・・・敵の数　＊　一体の敵の打つ弾の数
+
+	double distance_x[ENEMYMAX], distance_y[ENEMYMAX], sq_distance[ENEMYMAX];
+	double angle;
+	for (int j = 0; j < ENEMYMAX; j++) {
+		distance_x[j] = (player.x) - (enemy[j].x + 24);
+		distance_y[j] = (player.y) - (enemy[j].y + 30);
+		if (distance_x[j] < 0) distance_x[j] *= -1;
+		if (distance_y[j] < 0) distance_y[j] *= -1;
+		sq_distance[j] = sqrt(distance_x[j] * distance_x[j] + distance_y[j] * distance_y[j]);
+		
+	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//行動
@@ -235,76 +256,76 @@ void enemy_Update() {
 	if (t >= 1000 && enemy[16].flag == 1) enemy_act0(&enemy[16], 180);
 	if (t >= 1000 && enemy[17].flag == 1) enemy_act0(&enemy[17], 180);
 	
-	//3
+	//3 //1500
 	if (t >= 1250 && t < 1320 && enemy[18].flag == 1) enemy_act0(&enemy[18], 70);
 	if (t >= 1250 && t < 1320 && enemy[19].flag == 1) enemy_act0(&enemy[19], 90);
 	if (t >= 1250 && t < 1320 && enemy[20].flag == 1) enemy_act0(&enemy[20], 110);
 
-	if (t >= 1500 && enemy[18].flag == 1) enemy_act0(&enemy[18], 90);
-	if (t >= 1500 && enemy[19].flag == 1) enemy_act0(&enemy[19], 90);
-	if (t >= 1500 && enemy[20].flag == 1) enemy_act0(&enemy[20], 90);
+	if (t >= 1820 && enemy[18].flag == 1) enemy_act0(&enemy[18], 90);
+	if (t >= 1820 && enemy[19].flag == 1) enemy_act0(&enemy[19], 90);
+	if (t >= 1820 && enemy[20].flag == 1) enemy_act0(&enemy[20], 90);
 	
-	//4
-	if (t >= 1600 && t < 1700 && enemy[21].flag == 1) enemy_act0(&enemy[21], 30);
-	if (t >= 1600 && t < 1700 && enemy[22].flag == 1) enemy_act0(&enemy[22], 40);
-	if (t >= 1600 && t < 1700 && enemy[23].flag == 1) enemy_act0(&enemy[23], 50);
+	//4 s1600 e1 e2 1800
+	if (t >= 1920 && t < 2020 && enemy[21].flag == 1) enemy_act0(&enemy[21], 30);
+	if (t >= 1920 && t < 2020 && enemy[22].flag == 1) enemy_act0(&enemy[22], 40);
+	if (t >= 1920 && t < 2020 && enemy[23].flag == 1) enemy_act0(&enemy[23], 50);
 
-	if (t >= 1600 && t < 1700 && enemy[24].flag == 1) enemy_act0(&enemy[24], 130);
-	if (t >= 1600 && t < 1700 && enemy[25].flag == 1) enemy_act0(&enemy[25], 140);
-	if (t >= 1600 && t < 1700 && enemy[26].flag == 1) enemy_act0(&enemy[26], 150);
+	if (t >= 1920 && t < 2020 && enemy[24].flag == 1) enemy_act0(&enemy[24], 130);
+	if (t >= 1920 && t < 2020 && enemy[25].flag == 1) enemy_act0(&enemy[25], 140);
+	if (t >= 1920 && t < 2020 && enemy[26].flag == 1) enemy_act0(&enemy[26], 150);
 
 
-	if (t >= 1800 && enemy[21].flag == 1) enemy_act0(&enemy[21], 90);
-	if (t >= 1800 && enemy[22].flag == 1) enemy_act0(&enemy[22], 90);
-	if (t >= 1800 && enemy[23].flag == 1) enemy_act0(&enemy[23], 90);
-	if (t >= 1800 && enemy[24].flag == 1) enemy_act0(&enemy[24], 90);
-	if (t >= 1800 && enemy[25].flag == 1) enemy_act0(&enemy[25], 90);
-	if (t >= 1800 && enemy[26].flag == 1) enemy_act0(&enemy[26], 90);
+	if (t >= 2260 && enemy[21].flag == 1) enemy_act0(&enemy[21], 90);
+	if (t >= 2260 && enemy[22].flag == 1) enemy_act0(&enemy[22], 90);
+	if (t >= 2260 && enemy[23].flag == 1) enemy_act0(&enemy[23], 90);
+	if (t >= 2260 && enemy[24].flag == 1) enemy_act0(&enemy[24], 90);
+	if (t >= 2260 && enemy[25].flag == 1) enemy_act0(&enemy[25], 90);
+	if (t >= 2260 && enemy[26].flag == 1) enemy_act0(&enemy[26], 90);
 	
-	//5
-	if (t >= 1950 && enemy[27].flag == 1) enemy_act3(&enemy[27], 'l');
-	if (t >= 1965 && enemy[28].flag == 1) enemy_act3(&enemy[28], 'l');
-	if (t >= 1980 && enemy[29].flag == 1) enemy_act3(&enemy[29], 'l');
-	if (t >= 1995 && enemy[30].flag == 1) enemy_act3(&enemy[30], 'l');
-	if (t >= 2010 && enemy[31].flag == 1) enemy_act3(&enemy[31], 'l');
+	//5 1950 e2010
+	if (t >= 2410 && enemy[27].flag == 1) enemy_act3(&enemy[27], 'l');
+	if (t >= 2425 && enemy[28].flag == 1) enemy_act3(&enemy[28], 'l');
+	if (t >= 2440 && enemy[29].flag == 1) enemy_act3(&enemy[29], 'l');
+	if (t >= 2455 && enemy[30].flag == 1) enemy_act3(&enemy[30], 'l');
+	if (t >= 2470 && enemy[31].flag == 1) enemy_act3(&enemy[31], 'l');
 
-	if (t >= 1950 && enemy[32].flag == 1) enemy_act3(&enemy[32], 'r');
-	if (t >= 1965 && enemy[33].flag == 1) enemy_act3(&enemy[33], 'r');
-	if (t >= 1980 && enemy[34].flag == 1) enemy_act3(&enemy[34], 'r');
-	if (t >= 1995 && enemy[35].flag == 1) enemy_act3(&enemy[35], 'r');
-	if (t >= 2010 && enemy[36].flag == 1) enemy_act3(&enemy[36], 'r');
+	if (t >= 2410 && enemy[32].flag == 1) enemy_act3(&enemy[32], 'r');
+	if (t >= 2425 && enemy[33].flag == 1) enemy_act3(&enemy[33], 'r');
+	if (t >= 2440 && enemy[34].flag == 1) enemy_act3(&enemy[34], 'r');
+	if (t >= 2455 && enemy[35].flag == 1) enemy_act3(&enemy[35], 'r');
+	if (t >= 2470 && enemy[36].flag == 1) enemy_act3(&enemy[36], 'r');
 	
 
-	//6.1
-	if (t >= 2450 && enemy[37].flag == 1) enemy_act0(&enemy[37], 340);
-	if (t >= 2470 && enemy[38].flag == 1) enemy_act0(&enemy[38], 340);
-	if (t >= 2490 && enemy[39].flag == 1) enemy_act0(&enemy[39], 340);
+	//6.1 s2450 e2490
+	if (t >= 2910 && enemy[37].flag == 1) enemy_act0(&enemy[37], 330);
+	if (t >= 2930 && enemy[38].flag == 1) enemy_act0(&enemy[38], 330);
+	if (t >= 2950 && enemy[39].flag == 1) enemy_act0(&enemy[39], 330);
 
-	if (t >= 2450 && enemy[40].flag == 1) enemy_act0(&enemy[40], 200);
-	if (t >= 2470 && enemy[41].flag == 1) enemy_act0(&enemy[41], 200);
-	if (t >= 2490 && enemy[42].flag == 1) enemy_act0(&enemy[42], 200);
-
-
-	//6.2
-	if (t >= 2450 && t < 2520 && enemy[43].flag == 1) enemy_act0(&enemy[43], 70);
-	if (t >= 2450 && t < 2520 && enemy[44].flag == 1) enemy_act0(&enemy[44], 90);
-	if (t >= 2450 && t < 2520 && enemy[45].flag == 1) enemy_act0(&enemy[45], 110);
-
-	if (t >= 2620 && enemy[43].flag == 1) enemy_act0(&enemy[43], 90);
-	if (t >= 2620 && enemy[44].flag == 1) enemy_act0(&enemy[44], 90);
-	if (t >= 2620 && enemy[45].flag == 1) enemy_act0(&enemy[45], 90);
+	if (t >= 2910 && enemy[40].flag == 1) enemy_act0(&enemy[40], 210);
+	if (t >= 2930 && enemy[41].flag == 1) enemy_act0(&enemy[41], 210);
+	if (t >= 2950 && enemy[42].flag == 1) enemy_act0(&enemy[42], 210);
 
 
-	//7
-	if (t >= 2800 && t < 2850 && enemy[46].flag == 1) enemy_act0(&enemy[46], 70);
-	if (t >= 2800 && t < 2850 && enemy[47].flag == 1) enemy_act0(&enemy[47], 80);
-	if (t >= 2800 && t < 2850 && enemy[48].flag == 1) enemy_act0(&enemy[48], 90);
+	//6.2 s2450 e2620
+	if (t >= 2910 && t < 2950 && enemy[43].flag == 1) enemy_act0(&enemy[43], 70);
+	if (t >= 2910 && t < 2950 && enemy[44].flag == 1) enemy_act0(&enemy[44], 90);
+	if (t >= 2910 && t < 2950 && enemy[45].flag == 1) enemy_act0(&enemy[45], 110);
 
-	if (t >= 2800 && t < 2870 && enemy[49].flag == 1) enemy_act0(&enemy[49], 90);
+	if (t >= 3080 && enemy[43].flag == 1) enemy_act0(&enemy[43], 90);
+	if (t >= 3080 && enemy[44].flag == 1) enemy_act0(&enemy[44], 90);
+	if (t >= 3080 && enemy[45].flag == 1) enemy_act0(&enemy[45], 90);
 
-	if (t >= 2800 && t < 2850 && enemy[50].flag == 1) enemy_act0(&enemy[50], 90);
-	if (t >= 2800 && t < 2850 && enemy[51].flag == 1) enemy_act0(&enemy[51], 100);
-	if (t >= 2800 && t < 2850 && enemy[52].flag == 1) enemy_act0(&enemy[52], 110);
+
+	//7 s2800 s2 2850or2870
+	if (t >= 3180 && t < 3230 && enemy[46].flag == 1) enemy_act0(&enemy[46], 70);
+	if (t >= 3180 && t < 3230 && enemy[47].flag == 1) enemy_act0(&enemy[47], 80);
+	if (t >= 3180 && t < 3230 && enemy[48].flag == 1) enemy_act0(&enemy[48], 90);
+
+	if (t >= 3180 && t < 3250 && enemy[49].flag == 1) enemy_act0(&enemy[49], 90);
+
+	if (t >= 3180 && t < 3230 && enemy[50].flag == 1) enemy_act0(&enemy[50], 90);
+	if (t >= 3180 && t < 3230 && enemy[51].flag == 1) enemy_act0(&enemy[51], 100);
+	if (t >= 3180 && t < 3230 && enemy[52].flag == 1) enemy_act0(&enemy[52], 110);
 
 
 	//8 (未定)
@@ -327,6 +348,7 @@ void enemy_Update() {
 		if (enemy[6].flag == 1)createEnemyShot(enemy[6].x, enemy[6].y, 1, 2, 3, 3, atan2(player.y - enemy[6].y, player.x - enemy[6].x));
 		if (enemy[7].flag == 1)createEnemyShot(enemy[7].x, enemy[7].y, 1, 2, 3, 3, atan2(player.y - enemy[7].y, player.x - enemy[7].x));
 		if (enemy[8].flag == 1)createEnemyShot(enemy[8].x, enemy[8].y, 1, 2, 3, 3, atan2(player.y - enemy[8].y, player.x - enemy[8].x));
+
 	}
 	if (t >= 850 && t < 970 && t % 40 == 0) {
 		if (enemy[9].flag == 1)createEnemyShot(enemy[9].x, enemy[9].y, 1, 2, 3, 3, atan2(player.y - enemy[9].y, player.x - enemy[9].x));
@@ -344,22 +366,64 @@ void enemy_Update() {
 		if (enemy[17].flag == 1)createEnemyShot(enemy[17].x, enemy[17].y, 1, 2, 3, 3, atan2(player.y - enemy[17].y, player.x - enemy[17].x));
 	}
 
-	//3
+	//3 e1460
 	if (t >= 1350 && t < 1380 && t % 30 == 0) {
-		if (enemy[18].flag == 1)createEnemyShot(enemy[18].x, enemy[18].y, 3, 6, 3, 2, 1.11);
-		if (enemy[19].flag == 1)createEnemyShot(enemy[19].x, enemy[19].y, 3, 6, 3, 2, 1.11);
-		if (enemy[20].flag == 1)createEnemyShot(enemy[20].x, enemy[20].y, 3, 6, 3, 2, 1.11);
+		if (enemy[18].flag == 1)createEnemyShot(enemy[18].x, enemy[18].y, 3, 8, 3, 2, atan2(player.y - enemy[18].y, player.x - enemy[18].x));
+		if (enemy[19].flag == 1)createEnemyShot(enemy[19].x, enemy[19].y, 3, 8, 3, 2, atan2(player.y - enemy[19].y, player.x - enemy[19].x));
+		if (enemy[20].flag == 1)createEnemyShot(enemy[20].x, enemy[20].y, 3, 8, 3, 2, atan2(player.y - enemy[10].y, player.x - enemy[20].x));
+
 	}
 
 	if (t >= 1430 && t < 1460 && t % 30 == 0) {
-		if (enemy[18].flag == 1)createEnemyShot(enemy[18].x, enemy[18].y, 2, 6, 3, 2, 1.21);
-		if (enemy[19].flag == 1)createEnemyShot(enemy[19].x, enemy[19].y, 2, 6, 3, 2, 1.21);
-		if (enemy[20].flag == 1)createEnemyShot(enemy[20].x, enemy[20].y, 2, 6, 3, 2, 1.21);
+		if (enemy[18].flag == 1)createEnemyShot(enemy[18].x, enemy[18].y, 2, 8, 3, 2, atan2(player.y - enemy[18].y, player.x - enemy[18].x));
+		if (enemy[19].flag == 1)createEnemyShot(enemy[19].x, enemy[19].y, 2, 8, 3, 2, atan2(player.y - enemy[19].y, player.x - enemy[19].x));
+		if (enemy[20].flag == 1)createEnemyShot(enemy[20].x, enemy[20].y, 2, 8, 3, 2, atan2(player.y - enemy[10].y, player.x - enemy[20].x));
+
 	}
-	//同じことを後３回
+	if (t >= 1510 && t < 1540 && t % 30 == 0) {
+		if (enemy[18].flag == 1)createEnemyShot(enemy[18].x, enemy[18].y, 3, 8, 3, 2, atan2(player.y - enemy[18].y, player.x - enemy[18].x));
+		if (enemy[19].flag == 1)createEnemyShot(enemy[19].x, enemy[19].y, 3, 8, 3, 2, atan2(player.y - enemy[19].y, player.x - enemy[19].x));
+		if (enemy[20].flag == 1)createEnemyShot(enemy[20].x, enemy[20].y, 3, 8, 3, 2, atan2(player.y - enemy[10].y, player.x - enemy[20].x));
+
+	}
+
+	if (t >= 1590 && t < 1620 && t % 30 == 0) {
+		if (enemy[18].flag == 1)createEnemyShot(enemy[18].x, enemy[18].y, 2, 8, 3, 2, atan2(player.y - enemy[18].y, player.x - enemy[18].x));
+		if (enemy[19].flag == 1)createEnemyShot(enemy[19].x, enemy[19].y, 2, 8, 3, 2, atan2(player.y - enemy[19].y, player.x - enemy[19].x));
+		if (enemy[20].flag == 1)createEnemyShot(enemy[20].x, enemy[20].y, 2, 8, 3, 2, atan2(player.y - enemy[10].y, player.x - enemy[20].x));
+
+	}
+	if (t >= 1670 && t < 1700 && t % 30 == 0) {
+		//if (enemy[18].flag == 1)createEnemyShot(enemy[18].x, enemy[18].y, 3, 6, 3, 2, 1.11);
+		//if (enemy[19].flag == 1)createEnemyShot(enemy[19].x, enemy[19].y, 3, 6, 3, 2, 1.11);
+		//if (enemy[20].flag == 1)createEnemyShot(enemy[20].x, enemy[20].y, 3, 6, 3, 2, 1.11);
+		if (enemy[18].flag == 1)createEnemyShot(enemy[18].x, enemy[18].y, 3, 8, 3, 2, atan2(player.y - enemy[18].y, player.x - enemy[18].x));
+		if (enemy[19].flag == 1)createEnemyShot(enemy[19].x, enemy[19].y, 3, 8, 3, 2, atan2(player.y - enemy[19].y, player.x - enemy[19].x));
+		if (enemy[20].flag == 1)createEnemyShot(enemy[20].x, enemy[20].y, 3, 8, 3, 2, atan2(player.y - enemy[10].y, player.x - enemy[20].x));
+
+	}
+
+	if (t >= 1750 && t < 1780 && t % 30 == 0) {
+		//if (enemy[18].flag == 1)createEnemyShot(enemy[18].x, enemy[18].y, 2, 6, 3, 2, 1.21);
+		//if (enemy[19].flag == 1)createEnemyShot(enemy[19].x, enemy[19].y, 2, 6, 3, 2, 1.21);
+		//if (enemy[20].flag == 1)createEnemyShot(enemy[20].x, enemy[20].y. 2, 6, 3, 2, 1.21);
+		if (enemy[18].flag == 1)createEnemyShot(enemy[18].x, enemy[18].y, 2, 8, 3, 2, atan2(player.y - enemy[18].y, player.x - enemy[18].x));
+		if (enemy[19].flag == 1)createEnemyShot(enemy[19].x, enemy[19].y, 2, 8, 3, 2, atan2(player.y - enemy[19].y, player.x - enemy[19].x));
+		if (enemy[20].flag == 1)createEnemyShot(enemy[20].x, enemy[20].y, 2, 8, 3, 2, atan2(player.y - enemy[10].y, player.x - enemy[20].x));
+
+	}
 	
-	//4
-	if (t >= 1700 && t < 1790 && t % 30 == 0) {
+	//4		s 1700 end 1790
+	if (t >= 2020 && t < 2110 && t % 30 == 0) {
+		if (enemy[21].flag == 1)createEnemyShot(enemy[21].x, enemy[21].y, 1, 4, 3, 3, atan2(enemy[21].y, enemy[21].x));
+		if (enemy[22].flag == 1)createEnemyShot(enemy[22].x, enemy[22].y, 1, 4, 3, 3, atan2(enemy[22].y, enemy[22].x));
+		if (enemy[23].flag == 1)createEnemyShot(enemy[23].x, enemy[23].y, 1, 4, 3, 3, atan2(enemy[23].y, enemy[23].x));
+
+		if (enemy[24].flag == 1)createEnemyShot(enemy[24].x, enemy[24].y, 1, 4, 3, 3, atan2(enemy[24].y, enemy[24].x));
+		if (enemy[25].flag == 1)createEnemyShot(enemy[25].x, enemy[25].y, 1, 4, 3, 3, atan2(enemy[25].y, enemy[25].x));
+		if (enemy[26].flag == 1)createEnemyShot(enemy[26].x, enemy[26].y, 1, 4, 3, 3, atan2(enemy[26].y, enemy[26].x));
+	}
+	if (t >= 2160 && t < 2250 && t % 30 == 0) {
 		if (enemy[21].flag == 1)createEnemyShot(enemy[21].x, enemy[21].y, 1, 4, 3, 3, atan2(enemy[21].y, enemy[21].x));
 		if (enemy[22].flag == 1)createEnemyShot(enemy[22].x, enemy[22].y, 1, 4, 3, 3, atan2(enemy[22].y, enemy[22].x));
 		if (enemy[23].flag == 1)createEnemyShot(enemy[23].x, enemy[23].y, 1, 4, 3, 3, atan2(enemy[23].y, enemy[23].x));
@@ -370,8 +434,8 @@ void enemy_Update() {
 	}
 	//同じこともう２回
 
-	//5
-	if (t >= 2150 && t < 2400 && t % 60 == 0) {
+	//5 end2810
+	if (t >= 2560 && t < 2810 && t % 60 == 0) {
 		if (enemy[27].flag == 1)createEnemyShot(enemy[27].x, enemy[27].y, 1, 2, 3, 3, atan2(player.y - enemy[27].y, player.x - enemy[27].x));
 		if (enemy[28].flag == 1)createEnemyShot(enemy[28].x, enemy[28].y, 1, 2, 3, 3, atan2(player.y - enemy[28].y, player.x - enemy[28].x));
 		if (enemy[29].flag == 1)createEnemyShot(enemy[29].x, enemy[29].y, 1, 2, 3, 3, atan2(player.y - enemy[29].y, player.x - enemy[29].x));
@@ -385,7 +449,7 @@ void enemy_Update() {
 	}
 
 	//6.1
-	if (t >= 2500 && t < 2680 && t % 30 == 0) {
+	if (t >= 2910 && t < 3090 && t % 30 == 0) {
 		if (enemy[37].flag == 1)createEnemyShot(enemy[37].x, enemy[37].y, 1, 2, 3, 3, atan2(player.y - enemy[37].y, player.x - enemy[37].x));
 		if (enemy[38].flag == 1)createEnemyShot(enemy[38].x, enemy[38].y, 1, 2, 3, 3, atan2(player.y - enemy[38].y, player.x - enemy[38].x));
 		if (enemy[39].flag == 1)createEnemyShot(enemy[39].x, enemy[39].y, 1, 2, 3, 3, atan2(player.y - enemy[39].y, player.x - enemy[39].x));
@@ -395,35 +459,37 @@ void enemy_Update() {
 		if (enemy[42].flag == 1)createEnemyShot(enemy[42].x, enemy[42].y, 1, 2, 3, 3, atan2(player.y - enemy[42].y, player.x - enemy[42].x));
 	}
 	//6.2
-	if (t >= 2500 && t < 2680 && t % 30 == 0) {
+	if (t >= 2910 && t < 3090 && t % 30 == 0) {
 		if (enemy[43].flag == 1)createEnemyShot(enemy[43].x, enemy[43].y, 2, 6, 3, 2, 1.21);
 		if (enemy[44].flag == 1)createEnemyShot(enemy[44].x, enemy[44].y, 2, 6, 3, 2, 1.21);
 		if (enemy[45].flag == 1)createEnemyShot(enemy[45].x, enemy[45].y, 2, 6, 3, 2, 1.21);
 	}
 
 	//7
-	if (t >= 2900 && t % 60 == 0) {
+	if (t >= 3310 && t % 60 == 0) {
 		if (enemy[46].flag == 1)createEnemyShot(enemy[46].x, enemy[46].y, 3, 6, 3, 3, 1.11);
 		if (enemy[47].flag == 1)createEnemyShot(enemy[47].x, enemy[47].y, 3, 6, 3, 3, 1.11);
 		if (enemy[48].flag == 1)createEnemyShot(enemy[48].x, enemy[48].y, 3, 6, 3, 3, 1.11);
-		if (enemy[49].flag == 1)createEnemyShot(enemy[49].x, enemy[49].y, 3, 6, 3, 1, 1.11);
 		if (enemy[50].flag == 1)createEnemyShot(enemy[50].x, enemy[50].y, 3, 6, 3, 3, 1.11);
 		if (enemy[51].flag == 1)createEnemyShot(enemy[51].x, enemy[51].y, 3, 6, 3, 3, 1.11);
 		if (enemy[52].flag == 1)createEnemyShot(enemy[52].x, enemy[52].y, 3, 6, 3, 3, 1.11);
 	}
+	if (t >= 3310 && t % 7 == 0) {
+		if (enemy[49].flag == 1)createEnemyShot(enemy[49].x, enemy[49].y, 1, 4, 3, 1, 1.11);
+	}
 
 	//8(未定)
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
-
+	//当たり判定やフラグの管理等
 	for (int i = 0; i < ENEMYMAX; i++) {
-		if (enemy[i].x < -200 || 800 < enemy[i].x || enemy[i].y < -80 || 650 < enemy[i].y) enemy[i].flag = 0;
+		if (enemy[i].x < -200 || 800 < enemy[i].x || enemy[i].y < -100 || 650 < enemy[i].y) enemy[i].flag = 0;
 		if (enemy[i].hp <= 0) enemy[i].flag = 0;
 
-		//追加//////////////////////////////////////////////////////
+		//collision1
 		if (collision1(enemy, playershot, i) == 1) {
 			score++;
 		}
+		/*
 		if (collision2(player, enemyshot) == 1) {
 			if (enemyshot->type == 1) {
 				if (player.hp > 4) {
@@ -453,23 +519,28 @@ void enemy_Update() {
 				}
 			}
 		}
+		*/
+
+		//collision2
+		if(player.flag == 1)player.hp -= collision2(player, enemyshot);
+		
+
+		//collision3
 		if (collision3(player, enemy, i) == 1) {
-			if (player.hp > 2) {
-				player.hp--;
-				hp_g -= 2;
-			}
-			else {
-				player.hp = 0;
-			}
+			if (player.hp >= 1) player.hp--;
 		}
+
+		//collision4
 		if (collision4(playersword, enemy, i) == 1 && enemy[i].cnt == 0) {
 			enemy[i].cnt = t;
 			enemy[i].hp -= 5;
 			score += 100;
 		}
 		if (t == enemy[i].cnt + 20)enemy[i].cnt = 0;
-		
-		/////////////////////////////////////////////////////////////
+
+
+		//hp_gの更新
+		if(player.hp >= 0) hp_g = 575 + player.hp * 2;
 	}
 }
 
@@ -494,26 +565,32 @@ void enemy_Draw() {
 	if (enemy[46].flag == 0 && enemy[47].flag == 0 &&
 		enemy[48].flag == 0 && enemy[49].flag == 0 &&
 		enemy[50].flag == 0 && enemy[51].flag == 0 && enemy[52].flag == 0 || player.hp <= 0) {
-
 		finish_t++;;
 	}
-	if (finish_t >= 200) {
+	if (finish_t >= 100) {
 		DrawFormatString(225, 300, GetColor(0, 255, 0), "YOUR SCORE %d", score);
 		if (player.flag == 0)	DrawFormatString(235, 250, GetColor(255, 0, 0), "GAME OVER");
 		if (player.flag == 1)	DrawFormatString(235, 250, GetColor(255, 165, 0), "GAME CLEAR");
 
 	}
-	if (finish_t >= 300 && hp_g > 575) {
-		hp_g -= 2;
-		score += 10;
+	if (finish_t >= 200 && hp_g > 575) {
+		player.hp -= 1;
+		score += 20;
+		hp_g = 575 + player.hp * 2;
 	}
-	if (finish_t >= 550) DrawFormatString(225, 350, GetColor(0, 255, 0), "YOUR RANK ");
+	if (finish_t >= 400) DrawFormatString(225, 350, GetColor(0, 255, 0), "YOUR RANK ");
 
-	if (finish_t >= 650) {
-		if (score >= 7000)DrawFormatString(330, 350, GetColor(255, 255, 255), "S");
-		if (score < 7000 && score >= 5000)DrawFormatString(330, 350, GetColor(255, 255, 255), "A");
-		if (score < 5000 && score >= 3000)DrawFormatString(330, 350, GetColor(255, 255, 255), "B");
-		if (score < 3000 && score >= 0)DrawFormatString(330, 350, GetColor(255, 255, 255), "C");
+	if (finish_t >= 450) {
+		if (score >= 7800)DrawFormatString(330, 350, GetColor(255, 255, 255), "S");
+		if (score < 7800 && score >= 7200)DrawFormatString(330, 350, GetColor(255, 255, 255), "A");
+		if (score < 7200 && score >= 6700)DrawFormatString(330, 350, GetColor(255, 255, 255), "B");
+		if (score < 6700 && score >= 6300)DrawFormatString(330, 350, GetColor(255, 255, 255), "C");
+		if (score < 6300 && score >= 6000)DrawFormatString(330, 350, GetColor(255, 255, 255), "D");
+		if (score < 6000 && score >= 0)DrawFormatString(330, 350, GetColor(255, 255, 255), "E");
+
+	}
+	if (finish_t >= 500) {
+		DrawFormatString(180, 400, GetColor(255, 255, 255), "RESTART: Z   EXIT: X");
 
 	}
 

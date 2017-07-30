@@ -4,9 +4,9 @@
 #include "BaseUnit.h"
 #include "background.h"
 #include "BaseEnemy.h"
-#include "player_sword.h"
+#include "playersword.h"
 #include "enemy.h"
-#include "enemy_shot.h"
+#include "enemyshot.h"
 #include "grobal.h"
 #include "scoreboard.h"
 
@@ -47,12 +47,11 @@ void stage_Draw() {
 //I—¹ˆ—‚ğ‚·‚é
 void stage_Finalize() {
 	StopSoundFile();
-	enemyshot_Finalize();
 	background_Finalize();
 	player_Finalize();
 	playershot_Finalize();
 	playersword_Finalize();
-	enemy_Finalize();
 	enemyshot_Finalize();
+	enemy_Finalize();
 	scoreboard_Finalize();
 }

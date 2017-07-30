@@ -10,4 +10,4 @@ extern int score;
 extern int t;
 extern int hp_g;
 extern double NOWDIGANGLE;
-
+extern int finish_t;

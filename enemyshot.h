@@ -1,5 +1,5 @@
-#ifndef ENEMY_SHOT_H
-#define ENEMY_SHOT_H
+#ifndef ENEMYSHOT_H
+#define ENEMYSHOT_H
 
 //create to EnemyShot
 void createEnemyShot(float , float , int, int, int, int, double);
