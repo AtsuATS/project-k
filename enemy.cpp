@@ -11,6 +11,7 @@ int enemy_R, enemy_G, enemy_B;
 int score = 0;
 int t = 0;
 int finish_t = 0;//èIÇÌÇ¡ÇΩéûÇ…ìÆÇ´èoÇ∑
+int se;
 
 int collision1(Enemy_status enemy[], BaseShot playershot[], int i) {
 	float distance_x[ENEMYMAX], distance_y[ENEMYMAX], range[ENEMYMAX];
@@ -36,7 +37,6 @@ int collision1(Enemy_status enemy[], BaseShot playershot[], int i) {
 //ìGíeÇ∆é©ã@
 int collision2(BaseUnit player, Enemy_shot enemyshot[]) {
 	float distance_x2[EMAXSHOT], distance_y2[EMAXSHOT], range2[EMAXSHOT];
-
 	for (int j = 0; j < EMAXSHOT; j++) {
 		if (enemyshot[j].flag == 1) {
 			distance_x2[j] = (player.x) - (enemyshot[j].x + 24);
@@ -91,13 +91,14 @@ int collision4(BaseSword playersword, Enemy_status enemy[], int i) {//BaseUnit p
 		if (enemy[i].flag == 1 && playersword.flag == 1) {  //if(enemy[i].flag == 1 && playersword.flag == 1) Ç…ïœçX
 			distance_x4[j] = (psx) - (enemy[i].x + 24);
 			if (distance_x4[j] < 0) distance_x4[j] *= -1;
-			distance_y4[j] = (psy) - (enemy[i].y + 30);
+			distance_y4[j] = (psy + 5) - (enemy[i].y + 30);
 			if (distance_y4[j] < 0) distance_y4[j] *= -1;
 
 			if (psx > 530 || psx < 20 || psy > 590 || psy < 10)
 				return 0;
 
-			if (distance_x4[j] < 40 && distance_y4[j] < 13) {
+			if (distance_x4[j] < 40 && distance_y4[j] < 15) {
+				PlaySoundMem(se, DX_PLAYTYPE_BACK);
 				return 1;
 			}
 		}
@@ -163,18 +164,18 @@ void enemy_Initialize() {
 	enemy[36].hp = 5;  enemy[36].speed = 3;  enemy[36].x = 352;  enemy[36].y = 620;  enemy[36].flag = 1;  enemy[36].type = 3;
 
 	//6.1
-	enemy[37].hp = 5;  enemy[37].speed = 3;  enemy[37].x = -50;  enemy[37].y = 500;  enemy[37].flag = 1;  enemy[37].type = 3;
-	enemy[38].hp = 5;  enemy[38].speed = 3;  enemy[38].x = -50;  enemy[38].y = 500;  enemy[38].flag = 1;  enemy[38].type = 3;
-	enemy[39].hp = 5;  enemy[39].speed = 3;  enemy[39].x = -50;  enemy[39].y = 500;  enemy[39].flag = 1;  enemy[39].type = 3;
+	enemy[37].hp = 5;  enemy[37].speed = 3;  enemy[37].x = -50;  enemy[37].y = 520;  enemy[37].flag = 1;  enemy[37].type = 3;
+	enemy[38].hp = 5;  enemy[38].speed = 3;  enemy[38].x = -50;  enemy[38].y = 520;  enemy[38].flag = 1;  enemy[38].type = 3;
+	enemy[39].hp = 5;  enemy[39].speed = 3;  enemy[39].x = -50;  enemy[39].y = 520;  enemy[39].flag = 1;  enemy[39].type = 3;
 
-	enemy[40].hp = 5;  enemy[40].speed = 3;  enemy[40].x = 550;  enemy[40].y = 500;  enemy[40].flag = 1;  enemy[40].type = 3;
-	enemy[41].hp = 5;  enemy[41].speed = 3;  enemy[41].x = 550;  enemy[41].y = 500;  enemy[41].flag = 1;  enemy[41].type = 3;
-	enemy[42].hp = 5;  enemy[42].speed = 3;  enemy[42].x = 550;  enemy[42].y = 500;  enemy[42].flag = 1;  enemy[42].type = 3;
+	enemy[40].hp = 5;  enemy[40].speed = 3;  enemy[40].x = 550;  enemy[40].y = 520;  enemy[40].flag = 1;  enemy[40].type = 3;
+	enemy[41].hp = 5;  enemy[41].speed = 3;  enemy[41].x = 550;  enemy[41].y = 520;  enemy[41].flag = 1;  enemy[41].type = 3;
+	enemy[42].hp = 5;  enemy[42].speed = 3;  enemy[42].x = 550;  enemy[42].y = 520;  enemy[42].flag = 1;  enemy[42].type = 3;
 
 	//6.2
-	enemy[43].hp = 15;  enemy[43].speed = 4;  enemy[43].x = 2;   enemy[43].y = -90;  enemy[43].flag = 1;  enemy[43].type = 2;
-	enemy[44].hp = 15;  enemy[44].speed = 4;  enemy[44].x = 252;  enemy[44].y = -90;  enemy[44].flag = 1;  enemy[44].type = 2;
-	enemy[45].hp = 15;  enemy[45].speed = 4;  enemy[45].x = 502;  enemy[45].y = -90;  enemy[45].flag = 1;  enemy[45].type = 2;
+	enemy[43].hp = 15;  enemy[43].speed = 4;  enemy[43].x = 2;   enemy[43].y = -70;  enemy[43].flag = 1;  enemy[43].type = 2;
+	enemy[44].hp = 15;  enemy[44].speed = 4;  enemy[44].x = 252;  enemy[44].y = -70;  enemy[44].flag = 1;  enemy[44].type = 2;
+	enemy[45].hp = 15;  enemy[45].speed = 4;  enemy[45].x = 502;  enemy[45].y = -70;  enemy[45].flag = 1;  enemy[45].type = 2;
 
 	//7
 	enemy[46].hp = 5;  enemy[46].speed = 3;  enemy[46].x = 2;  enemy[46].y = -70;  enemy[46].flag = 1;  enemy[46].type = 3;
@@ -185,20 +186,11 @@ void enemy_Initialize() {
 	enemy[51].hp = 5;  enemy[51].speed = 3;  enemy[51].x = 402;  enemy[51].y = -70;  enemy[51].flag = 1;  enemy[51].type = 3;
 	enemy[52].hp = 5;  enemy[52].speed = 3;  enemy[52].x = 502;  enemy[52].y = -70;  enemy[52].flag = 1;  enemy[52].type = 3;
 
+	enemy_R = LoadGraph("GF\\ìGê‘âº.png");
+	enemy_G = LoadGraph("GF\\ìGóŒâº.png");
+	enemy_B = LoadGraph("GF\\ìGê¬âº.png");
 
-	//8(ñ¢íË)
-	enemy[53].hp = 5;  enemy[53].speed = 3;  enemy[53].x = 355;  enemy[53].y = -70;  enemy[53].flag = 0;  enemy[53].type = 3;
-	enemy[54].hp = 5;  enemy[54].speed = 3;  enemy[54].x = 355;  enemy[54].y = -70;  enemy[54].flag = 0;  enemy[54].type = 3;
-	enemy[55].hp = 5;  enemy[55].speed = 3;  enemy[55].x = 355;  enemy[55].y = -70;  enemy[55].flag = 0;  enemy[55].type = 3;
-	enemy[56].hp = 5;  enemy[56].speed = 3;  enemy[56].x = 355;  enemy[56].y = -70;  enemy[56].flag = 0;  enemy[56].type = 3;
-	enemy[57].hp = 5;  enemy[57].speed = 3;  enemy[57].x = 355;  enemy[57].y = -70;  enemy[57].flag = 0;  enemy[57].type = 3;
-	enemy[58].hp = 5;  enemy[58].speed = 3;  enemy[58].x = 355;  enemy[58].y = -70;  enemy[58].flag = 0;  enemy[58].type = 3;
-	enemy[59].hp = 5;  enemy[59].speed = 3;  enemy[59].x = 355;  enemy[59].y = -70;  enemy[59].flag = 0;  enemy[59].type = 3;
-
-	
-	enemy_R = LoadGraph("sozai\\GF\\ìGê‘âº.png");
-	enemy_G = LoadGraph("sozai\\GF\\ìGóŒâº.png");
-	enemy_B = LoadGraph("sozai\\GF\\ìGê¬âº.png");
+	se = LoadSoundMem("BGM\\tekikougeki.wav");
 
 }
 
@@ -210,17 +202,6 @@ void enemy_Update() {
 	//â~èÛÇÃäpìxÅEÅEÅEÅEatan2(enemy[i].y, enemy[i].x)
 	//ÇŒÇÁÇ‹Ç´ÅEÅEÅEsqrt(x + y)
 	//nÇÃà¯êîÅEÅEÅEìGÇÃêîÅ@ÅñÅ@àÍëÃÇÃìGÇÃë≈Ç¬íeÇÃêî
-
-	double distance_x[ENEMYMAX], distance_y[ENEMYMAX], sq_distance[ENEMYMAX];
-	double angle;
-	for (int j = 0; j < ENEMYMAX; j++) {
-		distance_x[j] = (player.x) - (enemy[j].x + 24);
-		distance_y[j] = (player.y) - (enemy[j].y + 30);
-		if (distance_x[j] < 0) distance_x[j] *= -1;
-		if (distance_y[j] < 0) distance_y[j] *= -1;
-		sq_distance[j] = sqrt(distance_x[j] * distance_x[j] + distance_y[j] * distance_y[j]);
-		
-	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//çsìÆ
@@ -283,16 +264,27 @@ void enemy_Update() {
 	if (t >= 2260 && enemy[26].flag == 1) enemy_act0(&enemy[26], 90);
 	
 	//5 1950 e2010
-	if (t >= 2410 && enemy[27].flag == 1) enemy_act3(&enemy[27], 'l');
-	if (t >= 2425 && enemy[28].flag == 1) enemy_act3(&enemy[28], 'l');
-	if (t >= 2440 && enemy[29].flag == 1) enemy_act3(&enemy[29], 'l');
-	if (t >= 2455 && enemy[30].flag == 1) enemy_act3(&enemy[30], 'l');
-	if (t >= 2470 && enemy[31].flag == 1) enemy_act3(&enemy[31], 'l');
+	if (t == 2410)enemy[27].act[3] = 0;
+	if (t == 2410)enemy[28].act[3] = 0;
+	if (t == 2410)enemy[29].act[3] = 0;
+	if (t == 2410)enemy[30].act[3] = 0;
+	if (t == 2410)enemy[31].act[3] = 0;
 
+	if (t == 2410)enemy[32].act[3] = 0;
+	if (t == 2410)enemy[33].act[3] = 0;
+	if (t == 2410)enemy[34].act[3] = 0;
+	if (t == 2410)enemy[35].act[3] = 0;
+	if (t == 2410)enemy[36].act[3] = 0;
+
+	if (t >= 2410 && enemy[27].flag == 1) enemy_act3(&enemy[27], 'l');
 	if (t >= 2410 && enemy[32].flag == 1) enemy_act3(&enemy[32], 'r');
+	if (t >= 2425 && enemy[28].flag == 1) enemy_act3(&enemy[28], 'l');
 	if (t >= 2425 && enemy[33].flag == 1) enemy_act3(&enemy[33], 'r');
+	if (t >= 2440 && enemy[29].flag == 1) enemy_act3(&enemy[29], 'l');
 	if (t >= 2440 && enemy[34].flag == 1) enemy_act3(&enemy[34], 'r');
+	if (t >= 2455 && enemy[30].flag == 1) enemy_act3(&enemy[30], 'l');
 	if (t >= 2455 && enemy[35].flag == 1) enemy_act3(&enemy[35], 'r');
+	if (t >= 2470 && enemy[31].flag == 1) enemy_act3(&enemy[31], 'l');
 	if (t >= 2470 && enemy[36].flag == 1) enemy_act3(&enemy[36], 'r');
 	
 
@@ -326,9 +318,6 @@ void enemy_Update() {
 	if (t >= 3180 && t < 3230 && enemy[50].flag == 1) enemy_act0(&enemy[50], 90);
 	if (t >= 3180 && t < 3230 && enemy[51].flag == 1) enemy_act0(&enemy[51], 100);
 	if (t >= 3180 && t < 3230 && enemy[52].flag == 1) enemy_act0(&enemy[52], 110);
-
-
-	//8 (ñ¢íË)
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -478,7 +467,6 @@ void enemy_Update() {
 		if (enemy[49].flag == 1)createEnemyShot(enemy[49].x, enemy[49].y, 1, 4, 3, 1, 1.11);
 	}
 
-	//8(ñ¢íË)
 
 	//ìñÇΩÇËîªíËÇ‚ÉtÉâÉOÇÃä«óùìô
 	for (int i = 0; i < ENEMYMAX; i++) {
@@ -520,7 +508,6 @@ void enemy_Update() {
 			}
 		}
 		*/
-
 		//collision2
 		if(player.flag == 1)player.hp -= collision2(player, enemyshot);
 		
@@ -536,11 +523,13 @@ void enemy_Update() {
 			enemy[i].hp -= 5;
 			score += 100;
 		}
-		if (t == enemy[i].cnt + 20)enemy[i].cnt = 0;
+		if (t == enemy[i].cnt + 10)enemy[i].cnt = 0;
 
 
 		//hp_gÇÃçXêV
 		if(player.hp >= 0) hp_g = 575 + player.hp * 2;
+
+
 	}
 }
 
@@ -553,7 +542,6 @@ void enemy_Draw() {
 		}
 		if (enemy[i].flag == 1 && enemy[i].type == 2) {
 			DrawGraph(enemy[i].x, enemy[i].y, enemy_G, TRUE);
-			//DrawBox(enemy[i].x + 19, enemy[i].y + 25, enemy[i].x + 29, enemy[i].y + 35, GetColor(0, 0, 255), TRUE);	
 		}
 		if (enemy[i].flag == 1 && enemy[i].type == 3) {
 			DrawGraph(enemy[i].x, enemy[i].y, enemy_B, TRUE);
@@ -569,8 +557,8 @@ void enemy_Draw() {
 	}
 	if (finish_t >= 100) {
 		DrawFormatString(225, 300, GetColor(0, 255, 0), "YOUR SCORE %d", score);
-		if (player.flag == 0)	DrawFormatString(235, 250, GetColor(255, 0, 0), "GAME OVER");
-		if (player.flag == 1)	DrawFormatString(235, 250, GetColor(255, 165, 0), "GAME CLEAR");
+		if (player.flag == 0)	DrawFormatString(240, 250, GetColor(255, 0, 0), "GAME OVER");
+		if (player.flag == 1)	DrawFormatString(240, 250, GetColor(255, 165, 0), "GAME CLEAR");
 
 	}
 	if (finish_t >= 200 && hp_g > 575) {
@@ -581,16 +569,16 @@ void enemy_Draw() {
 	if (finish_t >= 400) DrawFormatString(225, 350, GetColor(0, 255, 0), "YOUR RANK ");
 
 	if (finish_t >= 450) {
-		if (score >= 7800)DrawFormatString(330, 350, GetColor(255, 255, 255), "S");
-		if (score < 7800 && score >= 7200)DrawFormatString(330, 350, GetColor(255, 255, 255), "A");
-		if (score < 7200 && score >= 6700)DrawFormatString(330, 350, GetColor(255, 255, 255), "B");
-		if (score < 6700 && score >= 6300)DrawFormatString(330, 350, GetColor(255, 255, 255), "C");
-		if (score < 6300 && score >= 6000)DrawFormatString(330, 350, GetColor(255, 255, 255), "D");
-		if (score < 6000 && score >= 0)DrawFormatString(330, 350, GetColor(255, 255, 255), "E");
+		if (score >= 7500)DrawFormatString(330, 350, GetColor(255, 255, 255), "S");
+		if (score < 7500 && score >= 6900)DrawFormatString(330, 350, GetColor(255, 255, 255), "A");
+		if (score < 6900 && score >= 6400)DrawFormatString(330, 350, GetColor(255, 255, 255), "B");
+		if (score < 6400 && score >= 6000)DrawFormatString(330, 350, GetColor(255, 255, 255), "C");
+		if (score < 6000 && score >= 5700)DrawFormatString(330, 350, GetColor(255, 255, 255), "D");
+		if (score < 5700 && score >= 0)DrawFormatString(330, 350, GetColor(255, 255, 255), "E");
 
 	}
 	if (finish_t >= 500) {
-		DrawFormatString(180, 400, GetColor(255, 255, 255), "RESTART: Z   EXIT: X");
+		DrawFormatString(190, 400, GetColor(255, 255, 255), "RESTART: Z   EXIT: X");
 
 	}
 
@@ -602,5 +590,7 @@ void enemy_Finalize() {
 	DeleteGraph(enemy_R);
 	DeleteGraph(enemy_G);
 	DeleteGraph(enemy_B);
+	DeleteSoundMem(se);
+
 }
 

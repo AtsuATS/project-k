@@ -1,4 +1,4 @@
-#define ENEMYMAX 60 //УGВћН≈СеХ\О¶РФ
+#define ENEMYMAX 53 //УGВћН≈СеХ\О¶РФ
 #define EMAXSHOT 500 //ТeВћН≈СеХ\О¶РФ
 #define PMAXSHOT 20
 

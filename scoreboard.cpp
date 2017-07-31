@@ -8,7 +8,7 @@ int Yellow = GetColor(228, 228, 76);
 
 //スコアボード初期化
 void scoreboard_Initialize(void) {
-	score_board = LoadGraph("sozai\\GF\\score_board.png");
+	score_board = LoadGraph("GF\\score_board.png");
 }
 
 //スコアボード描画

@@ -58,9 +58,9 @@ void createEnemyShot(float ex , float ey, int n, int p, int s, int t, double ang
 
 //‰Šú‰»
 void enemyshot_Initialize() {
-	enemyshot_GF1 = LoadGraph("sozai\\GF\\Ô‹Ê¬.png");
-	enemyshot_GF2 = LoadGraph("sozai\\GF\\—Î‹Ê¬.png");
-	enemyshot_GF3 = LoadGraph("sozai\\GF\\Â‹Ê¬.png");
+	enemyshot_GF1 = LoadGraph("GF\\Ô‹Ê¬.png");
+	enemyshot_GF2 = LoadGraph("GF\\—Î‹Ê¬.png");
+	enemyshot_GF3 = LoadGraph("GF\\Â‹Ê¬.png");
 
 	for (int i = 0; i < EMAXSHOT; i++) {
 		enemyshot[i].flag = 0;
@@ -80,21 +80,14 @@ void enemyshot_Update() {
 			}
 		}
 		//©‹@‘_‚¢
-		/*if(enemyshot[i].flag == 1 && enemyshot[i].pattern == 2){
+		if(enemyshot[i].flag == 1 && enemyshot[i].pattern == 2){
 			enemyshot[i].x += enemyshot[i].speed * cos(enemyshot[i].ang)-0.3;
 			enemyshot[i].y += enemyshot[i].speed * sin(enemyshot[i].ang)-0.2;
 			if (enemyshot[i].y < -30 || enemyshot[i].y > 620 || enemyshot[i].x < -20 || 570 < enemyshot[i].x) {
 				enemyshot[i].flag = 0;
 			}
-		}*/
-		if (enemyshot[i].flag == 1 && enemyshot[i].pattern == 2) {
-		
-			enemyshot[i].x += enemyshot[i].speed * cos(enemyshot[i].ang);
-			enemyshot[i].y += enemyshot[i].speed * sin(enemyshot[i].ang);
-			if (enemyshot[i].y < -30 || enemyshot[i].y > 620 || enemyshot[i].x < -20 || 570 < enemyshot[i].x) {
-				enemyshot[i].flag = 0;
-			}
 		}
+		
 		//‚Î‚ç‚Ü‚«’e“I‚È(“G‚ª“®‚­‚Æ‚«‚É‰Â)
 		if(enemyshot[i].flag == 1 && enemyshot[i].pattern == 3) {
 			double ang = (enemyshot[i].ang * 2 * M_PI / 6);

@@ -6,7 +6,7 @@
 #include <math.h>
 #include "calculation.h"
 
-
+//act[]‚Ì‰Šú‰»‚ð–Y‚ê‚È‚¢‚±‚Æ
 
 //ˆø”deg‚Ì•ûŒü‚Éenemy->speed‚Åi‚Þ
 void enemy_act0(Enemy_status *enemy, float deg) {
@@ -37,6 +37,7 @@ void enemy_act1(Enemy_status *enemy) {
 
 //¶‚©‚çŒ»‚ê‚Ä’†S‚Å‰º•ûŒü‚É1‰ñ“]‚Ì‚¿‚É‰E‚ÉÁ‚¦‚é
 //V‚½‚Éˆø”‚ðÝ‚¯‚ê‚Î‰ñ“]‚Ì•ûŒü‚ðŽw’è‰Â”\
+
 void enemy_act2(Enemy_status *enemy) {
 	if (enemy->act[2]==0) {
 			enemy->x += enemy->speed;
@@ -65,6 +66,7 @@ void enemy_act3(Enemy_status *enemy, char c) {
 		if (enemy->y < 100) {
 			if (c == 'l') enemy->deg = 270;
 			if (c == 'r') enemy->deg = -90;
+
 			enemy->act[3] = 1;
 		}
 	}

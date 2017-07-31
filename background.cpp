@@ -1,14 +1,17 @@
 #include "Dxlib.h"
 
 int GHandle;
-
+int bgm;
 //スクロールのy座標
 static int bgmove_y;
 
 //背景初期化
 void background_Initialize(void) {
 	int bgmove_y = 0;
-	GHandle = LoadGraph("sozai\\GF\\back_ground.png");
+	GHandle = LoadGraph("GF\\back_ground.png");
+	bgm = LoadSoundMem("BGM\\testBGM.wav");
+	PlaySoundMem(bgm, DX_PLAYTYPE_LOOP);
+
 
 }
 
@@ -29,4 +32,6 @@ void background_Draw(void) {
 //処理を終了する
 void background_Finalize(void) {
 	DeleteGraph(GHandle);
+	DeleteSoundMem(bgm);
+
 }

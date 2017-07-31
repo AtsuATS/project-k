@@ -13,7 +13,6 @@
 
 //‰Šú‰»
 void stage_Initialize() {
-	PlaySoundFile("sozai\\BGM\\testBGM.wav", DX_PLAYTYPE_LOOP);
 	background_Initialize();
 	player_Initialize();
 	playershot_Initialize();
@@ -46,7 +45,6 @@ void stage_Draw() {
 
 //I—¹ˆ—‚ğ‚·‚é
 void stage_Finalize() {
-	StopSoundFile();
 	background_Finalize();
 	player_Finalize();
 	playershot_Finalize();

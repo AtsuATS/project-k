@@ -50,7 +50,7 @@ void createPlayerSword(float px, float py,int pattern) {
 
 //‰Šú‰»
 void playersword_Initialize() {
-	playersword_GF = LoadGraph("sozai\\GF\\sword.png");
+	playersword_GF = LoadGraph("GF\\sword.png");
 }
 
 //“®‚«‚ğŒvZ‚·‚é

@@ -4,7 +4,7 @@
 #include "grobal.h"
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
-	SetMainWindowText("project-k");//windowsの名前を付ける
+	SetMainWindowText("Death Stalker");//windowsの名前を付ける
 	SetGraphMode(800, 600, 16);//windowsのサイズを決める
 	ChangeWindowMode(TRUE), DxLib_Init(), SetDrawScreen(DX_SCREEN_BACK); //ウィンドウモード変更と初期化と裏画面設定
 

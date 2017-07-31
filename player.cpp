@@ -18,7 +18,7 @@ static float calx, caly;
 
 //‰Šú‰»
 void player_Initialize() {
-	player_GF = LoadGraph("sozai\\GF\\©‹@.png");
+	player_GF = LoadGraph("GF\\©‹@.png");
 	player.flag = 1;
 	player.hp = 100;
 	player.x = 275;

@@ -21,7 +21,7 @@ void createPlayerShot(float px, float py) {
 
 //‰Šú‰»
 void playershot_Initialize() {
-	playershot_GF = LoadGraph("sozai\\GF\\shot.png");
+	playershot_GF = LoadGraph("GF\\shot.png");
 }
 
 //“®‚«‚ğŒvZ‚·‚é
