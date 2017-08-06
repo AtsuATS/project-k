@@ -4,6 +4,7 @@
 #include "enemyshot.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include  <stdio.h>
 
 Enemy_status enemy[ENEMYMAX];
 
@@ -12,6 +13,8 @@ int score = 0;
 int t = 0;
 int finish_t = 0;//I‚í‚Á‚½‚É“®‚«o‚·
 int se;
+FILE *fp;
+char *fname = "enemystatus.csv";
 
 int collision1(Enemy_status enemy[], BaseShot playershot[], int i) {
 	float distance_x[ENEMYMAX], distance_y[ENEMYMAX], range[ENEMYMAX];
@@ -111,81 +114,16 @@ int collision4(BaseSword playersword, Enemy_status enemy[], int i) {//BaseUnit p
 
 void enemy_Initialize() {
 
-	//1
-	enemy[0].hp  = 5;  enemy[0].speed  = 2;  enemy[0].x  = 202;  enemy[0].y  = -70;  enemy[0].flag  = 1;   enemy[0].type = 3;
-	enemy[1].hp  = 5;  enemy[1].speed  = 2;  enemy[1].x  = 302;  enemy[1].y  = -70;  enemy[1].flag  = 1;   enemy[1].type = 3;
-	enemy[2].hp  = 5;  enemy[2].speed  = 2;  enemy[2].x  = 402;  enemy[2].y  = -60;  enemy[2].flag  = 1;   enemy[2].type = 3;
-	enemy[3].hp  = 5;  enemy[3].speed  = 2;  enemy[3].x  = 102;  enemy[3].y  = -60;  enemy[3].flag  = 1;   enemy[3].type = 3;
-	enemy[4].hp  = 5;  enemy[4].speed  = 2;  enemy[4].x  = 570;  enemy[4].y  = 180;  enemy[4].flag  = 1;   enemy[4].type = 3;
-	enemy[5].hp  = 5;  enemy[5].speed  = 2;  enemy[5].x  = -70;  enemy[5].y  = 180;  enemy[5].flag  = 1;   enemy[5].type = 3;
+	if ((fp = fopen(fname, "r")) == NULL) {
+		exit(1);
+	}
 
-	//2
-	enemy[6].hp  = 5;  enemy[6].speed  = 3;  enemy[6].x  = -50;  enemy[6].y  = 140;  enemy[6].flag  = 1;   enemy[6].type = 3;
-	enemy[7].hp  = 5;  enemy[7].speed  = 3;  enemy[7].x  = -100; enemy[7].y  = 140;  enemy[7].flag  = 1;   enemy[7].type = 3;
-	enemy[8].hp  = 5;  enemy[8].speed  = 3;  enemy[8].x  = -150; enemy[8].y  = 140;  enemy[8].flag  = 1;   enemy[8].type = 3;
+	while (fgetc(fp) != '\n');
 
-	enemy[9].hp  = 5;  enemy[9].speed  = 3;  enemy[9].x  = 550;  enemy[9].y  = 240;  enemy[9].flag  = 1;   enemy[9].type = 3;
-	enemy[10].hp = 5;  enemy[10].speed = 3;  enemy[10].x = 600;  enemy[10].y = 240;  enemy[10].flag = 1;  enemy[10].type = 3;
-	enemy[11].hp = 5;  enemy[11].speed = 3;  enemy[11].x = 650;  enemy[11].y = 240;  enemy[11].flag = 1;  enemy[11].type = 3;
-
-	enemy[12].hp = 5;  enemy[12].speed = 3;  enemy[12].x = -50;  enemy[12].y = 440;  enemy[12].flag = 1;  enemy[12].type = 3;
-	enemy[13].hp = 5;  enemy[13].speed = 3;  enemy[13].x = -100; enemy[13].y = 440;  enemy[13].flag = 1;  enemy[13].type = 3;
-	enemy[14].hp = 5;  enemy[14].speed = 3;  enemy[14].x = -150; enemy[14].y = 440;  enemy[14].flag = 1;  enemy[14].type = 3;
-
-	enemy[15].hp = 5;  enemy[15].speed = 3;  enemy[15].x = 550;  enemy[15].y = 340;  enemy[15].flag = 1;  enemy[15].type = 3;
-	enemy[16].hp = 5;  enemy[16].speed = 3;  enemy[16].x = 600;  enemy[16].y = 340;  enemy[16].flag = 1;  enemy[16].type = 3;
-	enemy[17].hp = 5;  enemy[17].speed = 3;  enemy[17].x = 650;  enemy[17].y = 340;  enemy[17].flag = 1;  enemy[17].type = 3;
-
-	//3
-	enemy[18].hp = 15;  enemy[18].speed = 3;  enemy[18].x = 2;   enemy[18].y = -70;  enemy[18].flag = 1;  enemy[18].type = 2;
-	enemy[19].hp = 15;  enemy[19].speed = 3;  enemy[19].x = 252;  enemy[19].y = -70;  enemy[19].flag = 1;  enemy[19].type = 2;
-	enemy[20].hp = 15;  enemy[20].speed = 3;  enemy[20].x = 502;  enemy[20].y = -70;  enemy[20].flag = 1;  enemy[20].type = 2;
-
-	//4
-	enemy[21].hp = 5;  enemy[21].speed = 3;  enemy[21].x = -50;  enemy[21].y = -70;  enemy[21].flag = 1;  enemy[21].type = 3;
-	enemy[22].hp = 5;  enemy[22].speed = 3;  enemy[22].x = -70;  enemy[22].y = -70;  enemy[22].flag = 1;  enemy[22].type = 3;
-	enemy[23].hp = 5;  enemy[23].speed = 3;  enemy[23].x = -90;  enemy[23].y = -70;  enemy[23].flag = 1;  enemy[23].type = 3;
-
-	enemy[24].hp = 5;  enemy[24].speed = 3;  enemy[24].x = 590;  enemy[24].y = -70;  enemy[24].flag = 1;  enemy[24].type = 3;
-	enemy[25].hp = 5;  enemy[25].speed = 3;  enemy[25].x = 570;  enemy[25].y = -70;  enemy[25].flag = 1;  enemy[25].type = 3;
-	enemy[26].hp = 5;  enemy[26].speed = 3;  enemy[26].x = 550;  enemy[26].y = -70;  enemy[26].flag = 1;  enemy[26].type = 3;
-
-	//5 ‰º‚©‚çã‚ª‚Á‚Ä‰ñ“]
-	enemy[27].hp = 5;  enemy[27].speed = 3;  enemy[27].x = 172;  enemy[27].y = 620;  enemy[27].flag = 1;  enemy[27].type = 3;
-	enemy[28].hp = 5;  enemy[28].speed = 3;  enemy[28].x = 172;  enemy[28].y = 620;  enemy[28].flag = 1;  enemy[28].type = 3;
-	enemy[29].hp = 5;  enemy[29].speed = 3;  enemy[29].x = 172;  enemy[29].y = 620;  enemy[29].flag = 1;  enemy[29].type = 3;
-	enemy[30].hp = 5;  enemy[30].speed = 3;  enemy[30].x = 172;  enemy[30].y = 620;  enemy[30].flag = 1;  enemy[30].type = 3;
-	enemy[31].hp = 5;  enemy[31].speed = 3;  enemy[31].x = 172;  enemy[31].y = 620;  enemy[31].flag = 1;  enemy[31].type = 3;
-
-	enemy[32].hp = 5;  enemy[32].speed = 3;  enemy[32].x = 352;  enemy[32].y = 620;  enemy[32].flag = 1;  enemy[32].type = 3;
-	enemy[33].hp = 5;  enemy[33].speed = 3;  enemy[33].x = 352;  enemy[33].y = 620;  enemy[33].flag = 1;  enemy[33].type = 3;
-	enemy[34].hp = 5;  enemy[34].speed = 3;  enemy[34].x = 352;  enemy[34].y = 620;  enemy[34].flag = 1;  enemy[34].type = 3;
-	enemy[35].hp = 5;  enemy[35].speed = 3;  enemy[35].x = 352;  enemy[35].y = 620;  enemy[35].flag = 1;  enemy[35].type = 3;
-	enemy[36].hp = 5;  enemy[36].speed = 3;  enemy[36].x = 352;  enemy[36].y = 620;  enemy[36].flag = 1;  enemy[36].type = 3;
-
-	//6.1
-	enemy[37].hp = 5;  enemy[37].speed = 3;  enemy[37].x = -50;  enemy[37].y = 520;  enemy[37].flag = 1;  enemy[37].type = 3;
-	enemy[38].hp = 5;  enemy[38].speed = 3;  enemy[38].x = -50;  enemy[38].y = 520;  enemy[38].flag = 1;  enemy[38].type = 3;
-	enemy[39].hp = 5;  enemy[39].speed = 3;  enemy[39].x = -50;  enemy[39].y = 520;  enemy[39].flag = 1;  enemy[39].type = 3;
-
-	enemy[40].hp = 5;  enemy[40].speed = 3;  enemy[40].x = 550;  enemy[40].y = 520;  enemy[40].flag = 1;  enemy[40].type = 3;
-	enemy[41].hp = 5;  enemy[41].speed = 3;  enemy[41].x = 550;  enemy[41].y = 520;  enemy[41].flag = 1;  enemy[41].type = 3;
-	enemy[42].hp = 5;  enemy[42].speed = 3;  enemy[42].x = 550;  enemy[42].y = 520;  enemy[42].flag = 1;  enemy[42].type = 3;
-
-	//6.2
-	enemy[43].hp = 15;  enemy[43].speed = 4;  enemy[43].x = 2;   enemy[43].y = -70;  enemy[43].flag = 1;  enemy[43].type = 2;
-	enemy[44].hp = 15;  enemy[44].speed = 4;  enemy[44].x = 252;  enemy[44].y = -70;  enemy[44].flag = 1;  enemy[44].type = 2;
-	enemy[45].hp = 15;  enemy[45].speed = 4;  enemy[45].x = 502;  enemy[45].y = -70;  enemy[45].flag = 1;  enemy[45].type = 2;
-
-	//7
-	enemy[46].hp = 5;  enemy[46].speed = 3;  enemy[46].x = 2;  enemy[46].y = -70;  enemy[46].flag = 1;  enemy[46].type = 3;
-	enemy[47].hp = 5;  enemy[47].speed = 3;  enemy[47].x = 102;  enemy[47].y = -70;  enemy[47].flag = 1;  enemy[47].type = 3;
-	enemy[48].hp = 5;  enemy[48].speed = 3;  enemy[48].x = 202;  enemy[48].y = -70;  enemy[48].flag = 1;  enemy[48].type = 3;
-	enemy[49].hp = 50;  enemy[49].speed = 3;  enemy[49].x = 252;  enemy[49].y = -70;  enemy[49].flag = 1;  enemy[49].type = 1;
-	enemy[50].hp = 5;  enemy[50].speed = 3;  enemy[50].x = 302;  enemy[50].y = -70;  enemy[50].flag = 1;  enemy[50].type = 3;
-	enemy[51].hp = 5;  enemy[51].speed = 3;  enemy[51].x = 402;  enemy[51].y = -70;  enemy[51].flag = 1;  enemy[51].type = 3;
-	enemy[52].hp = 5;  enemy[52].speed = 3;  enemy[52].x = 502;  enemy[52].y = -70;  enemy[52].flag = 1;  enemy[52].type = 3;
-
+	for (int i = 0; i <= 52; i++) {
+		fscanf(fp, "%*d,%d,%d,%f,%f,%d,%d\n",&(enemy[i].hp),&(enemy[i].speed),&(enemy[i].x),&(enemy[i].y),&(enemy[i].flag),&(enemy[i].type) );
+	}
+	fclose(fp);
 	enemy_R = LoadGraph("GF\\“GÔ‰¼.png");
 	enemy_G = LoadGraph("GF\\“G—Î‰¼.png");
 	enemy_B = LoadGraph("GF\\“GÂ‰¼.png");
