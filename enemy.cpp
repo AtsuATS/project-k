@@ -30,7 +30,7 @@ int collision1(Enemy_status enemy[], BaseShot playershot[], int i) {
 			//“–‚½‚è”»’èi‰~j
 			if (range[j] <= 20) {
 				playershot[j].flag = 0;
-				enemy[i].hp -= playershot[j].power;
+				enemy[i].hp -= playershot[j].power*bombmagnification;
 				return 1;
 			}
 		}
@@ -50,15 +50,15 @@ int collision2(BaseUnit player, Enemy_shot enemyshot[]) {
 
 			if (range2[j] <= 15 && enemyshot[j].type == 1) {
 				enemyshot[j].flag = 0;
-				return 5;
+				return 5*bombmagnification;
 			}
 			else if (range2[j] <= 15 && enemyshot[j].type == 2) {
 				enemyshot[j].flag = 0;
-				return 3;
+				return 3*bombmagnification;
 			}
 			else if (range2[j] <= 15 && enemyshot[j].type == 3) {
 				enemyshot[j].flag = 0;
-				return 2;
+				return 2*bombmagnification;
 			}
 		}
 	}
@@ -458,7 +458,7 @@ void enemy_Update() {
 		//collision4
 		if (collision4(playersword, enemy, i) == 1 && enemy[i].cnt == 0) {
 			enemy[i].cnt = t;
-			enemy[i].hp -= 5;
+			enemy[i].hp -= 5*bombmagnification;
 			score += 100;
 		}
 		if (t == enemy[i].cnt + 10)enemy[i].cnt = 0;

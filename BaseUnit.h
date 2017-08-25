@@ -5,6 +5,8 @@ typedef struct _BaseUnit {
 	float x;
 	float y;
 	int hp;
+	int mp;
+	int type_bomb; //The type of the bomb
 	int type;
 	float speed;
 	bool flag;
@@ -21,10 +23,15 @@ typedef struct _BaseShot {
 
 typedef struct _BaseSword {
 	float x;
+	float wx;
 	float y;
+	float wy;
 	float sdig;
+	float wsdig;
 	float gdig;
+	float wgdig;
 	int flame;
+	int wflame;
 	char l_or_r;
 	int pattern;
 	bool flag;
