@@ -16,3 +16,5 @@ extern int bombflag[4];
 extern float countflame;
 extern double NOWDIGANGLE;
 extern int finish_t;
+extern int bombcnt[2];
+extern int p_invi[2];

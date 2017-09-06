@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS 
 #include "DxLib.h"
 #include "grobal.h"
 #include "enemy_act.h"
@@ -11,6 +12,8 @@ Enemy_status enemy[ENEMYMAX];
 int enemy_R, enemy_G, enemy_B;
 int score = 0;
 int t = 0;
+int bombcnt[2]; //ボム３が起動したときのカウントを記憶
+int p_invi[2];
 int finish_t = 0;//終わった時に動き出す
 int se;
 FILE *fp;
@@ -105,6 +108,59 @@ int collision4(BaseSword playersword, Enemy_status enemy[], int i) {//BaseUnit p
 				return 1;
 			}
 		}
+	}
+	return 0;
+}
+
+//ボム１の当たり判定関数
+int bomb_collision1(BaseSword playersword, Enemy_status enemy[], Enemy_shot enemyshot[], int i) {
+	float distance_x4[ENEMYMAX], distance_y4[ENEMYMAX];
+	float distance_x5[EMAXSHOT], distance_y5[EMAXSHOT];
+	float psx = playersword.x + 40 * cos(NOWDIGANGLE * 180 / M_PI);
+	float psy = playersword.y + 40 * sin(NOWDIGANGLE * 180 / M_PI);
+
+	for (int k = 0; k < EMAXSHOT; k++) {
+		if (enemyshot[k].flag == 1) {
+			distance_x5[k] = (psx)-(enemyshot[k].x + 24);
+			if (distance_x5[k] < 0) distance_x5[k] *= -1;
+			distance_y5[k] = (psy + 5) - (enemyshot[k].y + 30);
+			if (distance_y5[k] < 0) distance_y5[k] *= -1;
+
+			if (distance_x5[k] < 40 && distance_y5[k] < 15) {
+				enemyshot[k].flag = 0;
+			}
+		}
+	}
+
+	for (int j = 0; j < ENEMYMAX; j++) {
+		if (enemy[i].flag == 1 && playersword.flag == 1) {
+			distance_x4[j] = (psx)-(enemy[i].x + 24);
+			if (distance_x4[j] < 0) distance_x4[j] *= -1;
+			distance_y4[j] = (psy + 5) - (enemy[i].y + 30);
+			if (distance_y4[j] < 0) distance_y4[j] *= -1;
+
+			if (psx > 530 || psx < 20 || psy > 590 || psy < 10)
+				return 0;
+
+			if (distance_x4[j] < 40 && distance_y4[j] < 15) {
+				PlaySoundMem(se, DX_PLAYTYPE_BACK);
+				return 1;
+			}
+		}
+	}
+	return 0;
+}
+
+//ボム３の当たり判定関数
+int bomb_collision2(Enemy_status enemy[], Enemy_shot enemyshot[], int i) {
+	for (int j = 0; j < EMAXSHOT; j++) {
+		if (enemyshot[j].flag == 1) {
+			enemyshot[j].flag = 0;
+		}
+	}
+	
+	if ((enemy[i].x >= 50 && enemy[i].x < 530) && (enemy[i].y >= 20 && enemy[i].y < 590)) {
+		return 1;
 	}
 	return 0;
 }
@@ -447,22 +503,57 @@ void enemy_Update() {
 		}
 		*/
 		//collision2
-		if(player.flag == 1)player.hp -= collision2(player, enemyshot);
+		if(player.flag == 1 && p_invi[1] != 1)player.hp -= collision2(player, enemyshot);
 		
 
 		//collision3
 		if (collision3(player, enemy, i) == 1) {
-			if (player.hp >= 1) player.hp--;
+			if (player.hp >= 1 && p_invi[1] != 1) player.hp--;
 		}
 
 		//collision4
 		if (collision4(playersword, enemy, i) == 1 && enemy[i].cnt == 0) {
 			enemy[i].cnt = t;
 			enemy[i].hp -= 5*bombmagnification;
-			score += 100;
+			if (t < bombcnt[0] + 30 && bomb_collision1(playersword, enemy, enemyshot, i) == 1) {
+				score += 50;
+			}
+			else {
+				score += 100;
+			}
 		}
 		if (t == enemy[i].cnt + 10)enemy[i].cnt = 0;
 
+
+
+		//ボム１の処理
+		if (player.type_bomb == 1) {
+			if (t < bombcnt[0] + 30 && bomb_collision1(playersword, enemy, enemyshot, i) == 1) {
+
+			}
+		}
+		if (t == bombcnt[0] + 30) {
+			bombcnt[0] = 0;
+		}
+
+		//ボム３の処理
+		if (bombflag[1] == 1) {
+			if (bomb_collision2(enemy, enemyshot, i) == 1 && bombcnt[1] >= t) {
+				enemy[i].hp -= 5 * bombmagnification;
+				if (enemy[i].hp <= 0) score += 100;
+			}
+			if (bomb_collision2(enemy, enemyshot, i) == 1) {
+
+			}	
+		}
+		if (t == bombcnt[1] + 420) {
+			bombcnt[1] = 0;
+			bombflag[1] = 0;
+		}
+		if (t == p_invi[0] + 480) {
+			p_invi[0] = 0;
+			p_invi[1] = 0;
+		}
 
 		//hp_gの更新
 		if(player.hp >= 0) hp_g = 575 + player.hp * 2;

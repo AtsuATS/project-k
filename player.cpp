@@ -147,6 +147,7 @@ void player_Update() {
 		if (BombPushCut <= 1 && player.flag == 1) {
 
 			if (player.type_bomb == 1&&player.mp-2>=0) {
+				bombcnt[0] = t;
 				createPlayerSword(player.x, player.y, 3);
 			}
 			else if (player.type_bomb == 2&& player.mp - 5 >= 0 &&bombflag[0]==0) {
@@ -155,6 +156,9 @@ void player_Update() {
 				bombmagnification = 3;
 			}
 			else if (player.type_bomb == 3&& player.mp - 20 >= 0 &&bombflag[1]==0) {
+				p_invi[0] = t;
+				p_invi[1] = 1;
+				bombcnt[1] = t;
 				player.mp -= 20;
 				bombflag[1] = 1;
 				bombflag[2] = player.x;
