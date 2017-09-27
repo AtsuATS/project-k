@@ -2,7 +2,8 @@
 #include "bomb.h"
 #include "grobal.h"
 	
-static float r; //staticがつくと自動的に初期値0
+//static float r; //staticがつくと自動的に初期値0
+float r;
 
 void bomb2(int flag) {
 	if (flag == 1 && countflame > 0)

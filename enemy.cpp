@@ -116,14 +116,19 @@ int collision4(BaseSword playersword, Enemy_status enemy[], int i) {//BaseUnit p
 int bomb_collision1(BaseSword playersword, Enemy_status enemy[], Enemy_shot enemyshot[], int i) {
 	float distance_x4[ENEMYMAX], distance_y4[ENEMYMAX];
 	float distance_x5[EMAXSHOT], distance_y5[EMAXSHOT];
+	float distance_x8[ENEMYMAX], distance_y8[ENEMYMAX];
+	float distance_x9[EMAXSHOT], distance_y9[EMAXSHOT];
 	float psx = playersword.x + 40 * cos(NOWDIGANGLE * 180 / M_PI);
 	float psy = playersword.y + 40 * sin(NOWDIGANGLE * 180 / M_PI);
+	float pswx = playersword.wx + 40 * cos(W_NOWDIGANGLE * 180 / M_PI);
+	float pswy = playersword.wy + 40 * sin(W_NOWDIGANGLE * 180 / M_PI);
+
 
 	for (int k = 0; k < EMAXSHOT; k++) {
 		if (enemyshot[k].flag == 1) {
 			distance_x5[k] = (psx)-(enemyshot[k].x + 24);
 			if (distance_x5[k] < 0) distance_x5[k] *= -1;
-			distance_y5[k] = (psy + 5) - (enemyshot[k].y + 30);
+			distance_y5[k] = (psy - 5) - (enemyshot[k].y + 30);
 			if (distance_y5[k] < 0) distance_y5[k] *= -1;
 
 			if (distance_x5[k] < 40 && distance_y5[k] < 15) {
@@ -132,14 +137,27 @@ int bomb_collision1(BaseSword playersword, Enemy_status enemy[], Enemy_shot enem
 		}
 	}
 
+	for (int m = 0; m < EMAXSHOT; m++) {
+		if (enemyshot[m].flag == 1) {
+			distance_x9[m] = (pswx + 10)-(enemyshot[m].x + 24);
+			if (distance_x9[m] < 0) distance_x9[m] *= -1;
+			distance_y9[m] = (pswy + 5) - (enemyshot[m].y + 30);
+			if (distance_y9[m] < 0) distance_y9[m] *= -1;
+
+			if (distance_x9[m] < 40 && distance_y9[m] < 15) {
+				enemyshot[m].flag = 0;
+			}
+		}
+	}
+
 	for (int j = 0; j < ENEMYMAX; j++) {
 		if (enemy[i].flag == 1 && playersword.flag == 1) {
 			distance_x4[j] = (psx)-(enemy[i].x + 24);
 			if (distance_x4[j] < 0) distance_x4[j] *= -1;
-			distance_y4[j] = (psy + 5) - (enemy[i].y + 30);
+			distance_y4[j] = (psy - 5) - (enemy[i].y + 30);
 			if (distance_y4[j] < 0) distance_y4[j] *= -1;
 
-			if (psx > 530 || psx < 20 || psy > 590 || psy < 10)
+			if (psx > 530 || psx < 20 || psy > 590 || psy < 20)
 				return 0;
 
 			if (distance_x4[j] < 40 && distance_y4[j] < 15) {
@@ -148,20 +166,60 @@ int bomb_collision1(BaseSword playersword, Enemy_status enemy[], Enemy_shot enem
 			}
 		}
 	}
+
+	for (int n = 0; n < ENEMYMAX; n++) {
+		if (enemy[i].flag == 1 && playersword.flag == 1) {
+			distance_x8[n] = (pswx + 10) - (enemy[i].x + 24);
+			if (distance_x8[n] < 0) distance_x8[n] *= -1;
+			distance_y8[n] = (pswy + 5) - (enemy[i].y + 30);
+			if (distance_y8[n] < 0) distance_y8[n] *= -1;
+
+			if (pswx > 530 || pswx < 20 || pswy > 590 || pswy < 20)
+				return 0;
+
+			if (distance_x8[n] < 40 && distance_y8[n] < 15) {
+				PlaySoundMem(se, DX_PLAYTYPE_BACK);
+				return 1;
+			}
+		}
+	}
+
 	return 0;
 }
 
 //ƒ{ƒ€‚R‚Ì“–‚½‚è”»’èŠÖ”
 int bomb_collision2(Enemy_status enemy[], Enemy_shot enemyshot[], int i) {
-	for (int j = 0; j < EMAXSHOT; j++) {
-		if (enemyshot[j].flag == 1) {
-			enemyshot[j].flag = 0;
+	float distance_x6[ENEMYMAX], distance_y6[ENEMYMAX], range6[ENEMYMAX];
+	float distance_x4[EMAXSHOT], distance_y4[EMAXSHOT], range4[EMAXSHOT];
+
+	for (int k = 0; k < EMAXSHOT; k++) {
+		if (enemyshot[k].flag == 1) {
+			distance_x4[k] = (bombflag[2]) - (enemyshot[k].x + 24);
+			if (distance_x4[k] < 0) distance_x4[k] *= -1;
+			distance_y4[k] = (bombflag[3]) - (enemyshot[k].y + 30);
+			if (distance_y4[k] < 0) distance_y4[k] *= -1;
+			range4[k] = sqrt(distance_x4[k] * distance_x4[k] + distance_y4[k] * distance_y4[k]);
+
+			if (range4[k] <= r + 5) {
+				enemyshot[k].flag = 0;
+			}
 		}
 	}
-	
-	if ((enemy[i].x >= 50 && enemy[i].x < 530) && (enemy[i].y >= 20 && enemy[i].y < 590)) {
-		return 1;
+
+	for (int j = 0; j < ENEMYMAX; j++) {
+		if (enemy[i].flag == 1) {
+			distance_x6[j] = (bombflag[2]) - (enemy[i].x + 24);
+			if (distance_x6[j] < 0) distance_x6[j] *= -1;
+			distance_y6[j] = (bombflag[3]) - (enemy[i].y + 30);
+			if (distance_y6[j] < 0) distance_y6[j] *= -1;
+			range6[j] = sqrt(distance_x6[j] * distance_x6[j] + distance_y6[j] * distance_y6[j]);
+
+			if (range6[j] <= r + 10) {
+				return 1;
+			}
+		}
 	}
+
 	return 0;
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -538,17 +596,24 @@ void enemy_Update() {
 
 		//ƒ{ƒ€‚R‚Ìˆ—
 		if (bombflag[1] == 1) {
-			if (bomb_collision2(enemy, enemyshot, i) == 1 && bombcnt[1] >= t) {
-				enemy[i].hp -= 5 * bombmagnification;
+			if (bomb_collision2(enemy, enemyshot, i) == 1) 
+				if (enemy[i].x < 530 && enemy[i].x > 20 && enemy[i].y < 580 && enemy[i].y > 20){
+					if (enemy[i].invi == 0) {
+						enemy[i].hp -= 5 * bombmagnification;
+						enemy[i].invi = 1;
+					}
 				if (enemy[i].hp <= 0) score += 100;
 			}
-			if (bomb_collision2(enemy, enemyshot, i) == 1) {
-
-			}	
+			
 		}
 		if (t == bombcnt[1] + 420) {
+			for (int i = 0; i < ENEMYMAX; i++) {
+				enemy[i].invi = 0;
+			}
 			bombcnt[1] = 0;
 			bombflag[1] = 0;
+			
+			
 		}
 		if (t == p_invi[0] + 480) {
 			p_invi[0] = 0;

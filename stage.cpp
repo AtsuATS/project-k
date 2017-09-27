@@ -9,6 +9,7 @@
 #include "enemyshot.h"
 #include "grobal.h"
 #include "scoreboard.h"
+#include "bomb.h"
 
 
 //‰Šú‰»
@@ -28,6 +29,7 @@ void stage_Update() {
 	player_Update();
 	playershot_Update();
 	enemy_Update();
+	bomb_Update();
 	enemyshot_Update();
 }
 
@@ -40,6 +42,7 @@ void stage_Draw() {
 	player_Draw();
 	enemy_Draw();
 	enemyshot_Draw();
+	bomb_Draw();
 	scoreboard_Draw();
 }
 
