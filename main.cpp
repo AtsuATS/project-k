@@ -20,16 +20,22 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		//Update
 		stage_Update();
 
+		
 		//Draw
-		stage_Draw();
-
-		if (keyboard_Get(KEY_INPUT_X) > 0 && finish_t >= 500) break;
-		if (keyboard_Get(KEY_INPUT_Z) > 0 && finish_t >= 500) {
-			stage_Finalize();
-			stage_Initialize();
-			finish_t = 0;
-			t = 0;
-			score = 0;
+		if (status == 0)DrawFormatString(350, 300, GetColor(255, 255, 255), "PUSH S");
+		if (keyboard_Get(KEY_INPUT_S)> 0) {
+			status++;
+		}
+		if (status >= 1) {
+			stage_Draw();
+			if (keyboard_Get(KEY_INPUT_X) > 0 && finish_t >= 500) break;
+			if (keyboard_Get(KEY_INPUT_Z) > 0 && finish_t >= 500) {
+				stage_Finalize();
+				stage_Initialize();
+				finish_t = 0;
+				t = 0;
+				score = 0;
+			}
 		}
 		//ScreenFlip();
 	}

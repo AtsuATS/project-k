@@ -503,6 +503,26 @@ void enemy_Update() {
 		}
 	}*/
 
+	//参考
+	//ex ey...座標　n...弾の個数　p...パターン　s...スピード　t...弾のタイプ　ang...角度
+	/*
+	//レーザー弾　攻撃(1),(2)
+	if (t >= 200 && t < 270 && enemy[53].flag == 1) enemy_act0(&enemy[53], 90);
+	if (t >= 350 && t % 60 == 0) {
+	if (enemy[53].flag == 1) createEnemyShot(enemy[53].x, enemy[53].y, 1, 9, 6, 2, atan2(player.y - enemy[53].y, player.x - enemy[53].x));
+	}
+
+	//自機狙いからの回転弾幕　　攻撃１
+	if (t >= 350 && t < 650 && t % 3 == 0) {
+	if (enemy[53].flag == 1)createEnemyShot(enemy[49].x, enemy[49].y, 1, 11, 6, 1, 1.11);
+	}
+	if (t >= 650 && t < 950 && t % 5 == 0) {
+	if (enemy[49].flag == 1)createEnemyShot(enemy[49].x, enemy[49].y, 1, 2, 6, 3, atan2(player.y - enemy[49].y, player.x - enemy[49].x));
+	}
+	if (t == 950) t = 340;
+	*/
+
+
 
 	//当たり判定やフラグの管理等
 	for (int i = 0; i < ENEMYMAX; i++) {
