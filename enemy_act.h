@@ -8,5 +8,7 @@ void enemy_act2(Enemy_status *enemy);
 void enemy_act3(Enemy_status *enemy, char c);
 void enemy_act4(Enemy_status *enemy);
 void enemy_act5(Enemy_status *enemy);
-
+void enemy_act6(Enemy_status *enemy);
+void enemy_act7(Enemy_status *enemy);
+void enemy_act8(Enemy_status *enemy);
 #endif

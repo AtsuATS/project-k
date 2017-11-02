@@ -3,6 +3,8 @@
 #include "enemy.h"
 #include "enemyshot.h"
 #define _USE_MATH_DEFINES
+#define STOPPOINT_X 275 //ボス用定義
+#define STOPPOINT_Y 150 //ボス用定義
 #include <math.h>
 #include "calculation.h"
 
@@ -94,7 +96,18 @@ void enemy_act3(Enemy_status *enemy, char c) {
 
 //くねくね(改良予定)
 void enemy_act4(Enemy_status *enemy) {
-	if (enemy->act[4] == 0) {
+	static int theta = 0;
+	
+	enemy->x += enemy->speed*sin(to_rad(theta));
+	enemy->y += enemy->speed;
+	theta += enemy->speed;
+
+	if (theta >= 720) {
+		//enemy->act[7] = 1;
+		theta = 0;
+	}
+	
+	/*if (enemy->act[4] == 0) {
 		enemy_act0(enemy, enemy->deg);
 		enemy->deg += 5;
 		if (enemy->deg >= 180){
@@ -107,7 +120,7 @@ void enemy_act4(Enemy_status *enemy) {
 		if (enemy->deg <= 0) {
 			enemy->act[4] = 0;
 		}
-	}
+	}*/
 	return;
 }
 
@@ -115,7 +128,82 @@ void enemy_act4(Enemy_status *enemy) {
 void enemy_act5(Enemy_status *enemy) {
 	if (enemy->act[5] == 0) {
 		enemy->y += enemy->speed;
-		if (enemy->y >= 200)enemy->act[5] = 1;
+		if (enemy->y >= STOPPOINT_Y)enemy->act[5] = 1;
 	}
+	return;
+}
+
+//ボスの動き
+void enemy_act6(Enemy_status *enemy) {
+	
+	static int dx = -1;
+	
+	if (enemy->act[6] == 0) {
+		enemy->x += enemy->speed;
+		if (enemy->y <= 50) dx = 1;
+		enemy->y += enemy->speed*dx;
+
+		if (enemy->y >= STOPPOINT_Y) {
+			enemy->act[6] = 1;
+		}
+	}
+	else if (enemy->act[6] == 1) {
+		enemy->x -= enemy->speed;
+		if (enemy->y >= 250) dx = -1;
+		enemy->y += enemy->speed*dx;
+
+		if (enemy->y <= STOPPOINT_Y) {
+			enemy->act[6] = 2;
+		}
+	}
+
+	else if (enemy->act[6] == 2) {
+		enemy->x -= enemy->speed;
+		if (enemy->y <= 50) dx = 1;
+		enemy->y += enemy->speed*dx;
+
+		if (enemy->y >= STOPPOINT_Y) {
+			enemy->act[6] = 3;
+		}
+	}
+
+	else if (enemy->act[6] == 3) {
+		enemy->x += enemy->speed;
+		if (enemy->y >= 250) dx = -1;
+		enemy->y += enemy->speed*dx;
+
+		if (enemy->y <= STOPPOINT_Y) {
+			enemy->act[6] = 0;
+		}
+	}
+}
+
+void enemy_act7(Enemy_status *enemy) {
+	static int dx = 1, dy = 1;
+	int rand_p = 0;
+	//if (rand_p == 1 || rand_p == 2) rand_p += 5;
+	//else 
+	rand_p = nrandom(120);
+	enemy->x += enemy->speed*dx;
+	enemy->y += enemy->speed*dy;
+	//if (rand_p == 1)dx *= -1;
+	//if (rand_p == 2)dy *= -1;
+	if (enemy->x <= 50 || enemy->x >= 500 || rand_p == 1) dx *= -1;
+	if (enemy->y <= 50 || enemy->y >= 250 || rand_p == 2) dy *= -1;
+}
+
+void enemy_act8(Enemy_status *enemy) {
+	static int theta = 0;
+
+	//enemy->x += enemy->speed;
+	enemy->x = STOPPOINT_X + 215 * sin(0.5*to_rad(theta));
+	enemy->y =STOPPOINT_Y- 50*sin(to_rad(theta));
+	theta+=enemy->speed;
+
+	if (theta>=720) {
+		//enemy->act[7] = 1;
+		theta = 0;
+	}
+	
 	return;
 }

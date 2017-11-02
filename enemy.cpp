@@ -4,6 +4,7 @@
 #include "enemy_act.h"
 #include "enemyshot.h"
 #define _USE_MATH_DEFINES
+#define SECOND 60
 #include <math.h>
 #include  <stdio.h>
 
@@ -11,10 +12,12 @@ Enemy_status enemy[ENEMYMAX];
 
 int enemy_R, enemy_G, enemy_B;
 int score = 0;
-int t = 0;
+int t = 3000;
+int Boss_t = 0;//Boss戦開始で動き出す
+int finish_t = 0;//終わった時に動き出す
+bool GP_flag[1] = { {0} }; //汎用フラグ
 int bombcnt[2]; //ボム３が起動したときのカウントを記憶
 int p_invi[2];
-int finish_t = 0;//終わった時に動き出す
 int se;
 FILE *fp;
 char *fname = "enemystatus.csv";
@@ -116,19 +119,14 @@ int collision4(BaseSword playersword, Enemy_status enemy[], int i) {//BaseUnit p
 int bomb_collision1(BaseSword playersword, Enemy_status enemy[], Enemy_shot enemyshot[], int i) {
 	float distance_x4[ENEMYMAX], distance_y4[ENEMYMAX];
 	float distance_x5[EMAXSHOT], distance_y5[EMAXSHOT];
-	float distance_x8[ENEMYMAX], distance_y8[ENEMYMAX];
-	float distance_x9[EMAXSHOT], distance_y9[EMAXSHOT];
 	float psx = playersword.x + 40 * cos(NOWDIGANGLE * 180 / M_PI);
 	float psy = playersword.y + 40 * sin(NOWDIGANGLE * 180 / M_PI);
-	float pswx = playersword.wx + 40 * cos(W_NOWDIGANGLE * 180 / M_PI);
-	float pswy = playersword.wy + 40 * sin(W_NOWDIGANGLE * 180 / M_PI);
-
 
 	for (int k = 0; k < EMAXSHOT; k++) {
 		if (enemyshot[k].flag == 1) {
 			distance_x5[k] = (psx)-(enemyshot[k].x + 24);
 			if (distance_x5[k] < 0) distance_x5[k] *= -1;
-			distance_y5[k] = (psy - 5) - (enemyshot[k].y + 30);
+			distance_y5[k] = (psy + 5) - (enemyshot[k].y + 30);
 			if (distance_y5[k] < 0) distance_y5[k] *= -1;
 
 			if (distance_x5[k] < 40 && distance_y5[k] < 15) {
@@ -137,27 +135,14 @@ int bomb_collision1(BaseSword playersword, Enemy_status enemy[], Enemy_shot enem
 		}
 	}
 
-	for (int m = 0; m < EMAXSHOT; m++) {
-		if (enemyshot[m].flag == 1) {
-			distance_x9[m] = (pswx + 10)-(enemyshot[m].x + 24);
-			if (distance_x9[m] < 0) distance_x9[m] *= -1;
-			distance_y9[m] = (pswy + 5) - (enemyshot[m].y + 30);
-			if (distance_y9[m] < 0) distance_y9[m] *= -1;
-
-			if (distance_x9[m] < 40 && distance_y9[m] < 15) {
-				enemyshot[m].flag = 0;
-			}
-		}
-	}
-
 	for (int j = 0; j < ENEMYMAX; j++) {
 		if (enemy[i].flag == 1 && playersword.flag == 1) {
 			distance_x4[j] = (psx)-(enemy[i].x + 24);
 			if (distance_x4[j] < 0) distance_x4[j] *= -1;
-			distance_y4[j] = (psy - 5) - (enemy[i].y + 30);
+			distance_y4[j] = (psy + 5) - (enemy[i].y + 30);
 			if (distance_y4[j] < 0) distance_y4[j] *= -1;
 
-			if (psx > 530 || psx < 20 || psy > 590 || psy < 20)
+			if (psx > 530 || psx < 20 || psy > 590 || psy < 10)
 				return 0;
 
 			if (distance_x4[j] < 40 && distance_y4[j] < 15) {
@@ -166,60 +151,20 @@ int bomb_collision1(BaseSword playersword, Enemy_status enemy[], Enemy_shot enem
 			}
 		}
 	}
-
-	for (int n = 0; n < ENEMYMAX; n++) {
-		if (enemy[i].flag == 1 && playersword.flag == 1) {
-			distance_x8[n] = (pswx + 10) - (enemy[i].x + 24);
-			if (distance_x8[n] < 0) distance_x8[n] *= -1;
-			distance_y8[n] = (pswy + 5) - (enemy[i].y + 30);
-			if (distance_y8[n] < 0) distance_y8[n] *= -1;
-
-			if (pswx > 530 || pswx < 20 || pswy > 590 || pswy < 20)
-				return 0;
-
-			if (distance_x8[n] < 40 && distance_y8[n] < 15) {
-				PlaySoundMem(se, DX_PLAYTYPE_BACK);
-				return 1;
-			}
-		}
-	}
-
 	return 0;
 }
 
 //ボム３の当たり判定関数
 int bomb_collision2(Enemy_status enemy[], Enemy_shot enemyshot[], int i) {
-	float distance_x6[ENEMYMAX], distance_y6[ENEMYMAX], range6[ENEMYMAX];
-	float distance_x4[EMAXSHOT], distance_y4[EMAXSHOT], range4[EMAXSHOT];
-
-	for (int k = 0; k < EMAXSHOT; k++) {
-		if (enemyshot[k].flag == 1) {
-			distance_x4[k] = (bombflag[2]) - (enemyshot[k].x + 24);
-			if (distance_x4[k] < 0) distance_x4[k] *= -1;
-			distance_y4[k] = (bombflag[3]) - (enemyshot[k].y + 30);
-			if (distance_y4[k] < 0) distance_y4[k] *= -1;
-			range4[k] = sqrt(distance_x4[k] * distance_x4[k] + distance_y4[k] * distance_y4[k]);
-
-			if (range4[k] <= r + 5) {
-				enemyshot[k].flag = 0;
-			}
+	for (int j = 0; j < EMAXSHOT; j++) {
+		if (enemyshot[j].flag == 1) {
+			enemyshot[j].flag = 0;
 		}
 	}
-
-	for (int j = 0; j < ENEMYMAX; j++) {
-		if (enemy[i].flag == 1) {
-			distance_x6[j] = (bombflag[2]) - (enemy[i].x + 24);
-			if (distance_x6[j] < 0) distance_x6[j] *= -1;
-			distance_y6[j] = (bombflag[3]) - (enemy[i].y + 30);
-			if (distance_y6[j] < 0) distance_y6[j] *= -1;
-			range6[j] = sqrt(distance_x6[j] * distance_x6[j] + distance_y6[j] * distance_y6[j]);
-
-			if (range6[j] <= r + 10) {
-				return 1;
-			}
-		}
+	
+	if ((enemy[i].x >= 50 && enemy[i].x < 530) && (enemy[i].y >= 20 && enemy[i].y < 590)) {
+		return 1;
 	}
-
 	return 0;
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -227,6 +172,7 @@ int bomb_collision2(Enemy_status enemy[], Enemy_shot enemyshot[], int i) {
 
 
 void enemy_Initialize() {
+	srand((unsigned)time(NULL));
 
 	if ((fp = fopen(fname, "r")) == NULL) {
 		exit(1);
@@ -234,7 +180,7 @@ void enemy_Initialize() {
 
 	while (fgetc(fp) != '\n');
 
-	for (int i = 0; i <= 52; i++) {
+	for (int i = 0; i <= ENEMYMAX; i++) {
 		fscanf(fp, "%*d,%d,%d,%f,%f,%d,%d\n",&(enemy[i].hp),&(enemy[i].speed),&(enemy[i].x),&(enemy[i].y),&(enemy[i].flag),&(enemy[i].type) );
 	}
 	fclose(fp);
@@ -370,6 +316,37 @@ void enemy_Update() {
 	if (t >= 3180 && t < 3230 && enemy[50].flag == 1) enemy_act0(&enemy[50], 90);
 	if (t >= 3180 && t < 3230 && enemy[51].flag == 1) enemy_act0(&enemy[51], 100);
 	if (t >= 3180 && t < 3230 && enemy[52].flag == 1) enemy_act0(&enemy[52], 110);
+
+	//ボス前の敵の全滅を確認
+	if (enemy[46].flag == 0 && enemy[47].flag == 0 &&
+		enemy[48].flag == 0 && enemy[49].flag == 0 &&
+		enemy[50].flag == 0 && enemy[51].flag == 0 &&
+		enemy[52].flag == 0 &&enemy[53].flag==0) {
+		enemy[53].flag = 1;
+		Boss_t -= 300;
+	}
+
+	//Boss戦
+	if (enemy[53].flag == 1) {
+		int first = 150;
+		int second = first*2;
+		Boss_t++;
+		if (0<=Boss_t&&Boss_t <= first * SECOND) {
+			if (GP_flag[0] == 0) {
+			     enemy_act5(&enemy[53]);
+				 if (enemy[53].y >= 150)GP_flag[0] = 1;
+			}
+			else enemy_act8(&enemy[53]);
+		}
+		else if (first * SECOND < Boss_t&&Boss_t < second * SECOND) {
+			enemy_act7(&enemy[53]);
+		}
+		else if (Boss_t <= second * SECOND) {
+
+		}
+	}
+
+
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -519,11 +496,20 @@ void enemy_Update() {
 		if (enemy[49].flag == 1)createEnemyShot(enemy[49].x, enemy[49].y, 1, 4, 3, 1, 1.11);
 	}
 
+	//ボスバトル
+	/*if (Boss_t >= 0) {
+		if (enemy[53].flag == 1) {
+			//createEnemyShot関数入れる
+		}
+	}*/
+
 
 	//当たり判定やフラグの管理等
 	for (int i = 0; i < ENEMYMAX; i++) {
-		if (enemy[i].x < -200 || 800 < enemy[i].x || enemy[i].y < -100 || 650 < enemy[i].y) enemy[i].flag = 0;
-		if (enemy[i].hp <= 0) enemy[i].flag = 0;
+		if ((enemy[i].x < -200 || 800 < enemy[i].x || enemy[i].y < -100 || 650 < enemy[i].y)&&enemy[i].flag==1)
+			enemy[i].flag = 0;
+		if (enemy[i].hp <= 0&&enemy[i].flag==1) 
+			enemy[i].flag = 0;
 
 		//collision1
 		if (collision1(enemy, playershot, i) == 1) {
@@ -596,24 +582,17 @@ void enemy_Update() {
 
 		//ボム３の処理
 		if (bombflag[1] == 1) {
-			if (bomb_collision2(enemy, enemyshot, i) == 1) 
-				if (enemy[i].x < 530 && enemy[i].x > 20 && enemy[i].y < 580 && enemy[i].y > 20){
-					if (enemy[i].invi == 0) {
-						enemy[i].hp -= 5 * bombmagnification;
-						enemy[i].invi = 1;
-					}
+			if (bomb_collision2(enemy, enemyshot, i) == 1 && bombcnt[1] >= t) {
+				enemy[i].hp -= 5 * bombmagnification;
 				if (enemy[i].hp <= 0) score += 100;
 			}
-			
+			if (bomb_collision2(enemy, enemyshot, i) == 1) {
+
+			}	
 		}
 		if (t == bombcnt[1] + 420) {
-			for (int i = 0; i < ENEMYMAX; i++) {
-				enemy[i].invi = 0;
-			}
 			bombcnt[1] = 0;
 			bombflag[1] = 0;
-			
-			
 		}
 		if (t == p_invi[0] + 480) {
 			p_invi[0] = 0;
@@ -643,11 +622,17 @@ void enemy_Draw() {
 	}
 
 
+	//Boss戦手前の表示
+	if (-200<=Boss_t&&Boss_t<0&&enemy[53].flag==1) {
+		DrawFormatString(245, 300, GetColor(255, 0, 0), "BOSS BATLE!!");
+	}
+
 	//終了時の処理 最後の敵が消える又は自機体力が０になった時
-	if (enemy[46].flag == 0 && enemy[47].flag == 0 &&
+	if (player.hp <= 0||enemy[53].hp<=0){
+		finish_t++;
+	/*if (enemy[46].flag == 0 && enemy[47].flag == 0 &&
 		enemy[48].flag == 0 && enemy[49].flag == 0 &&
-		enemy[50].flag == 0 && enemy[51].flag == 0 && enemy[52].flag == 0 || player.hp <= 0) {
-		finish_t++;;
+		enemy[50].flag == 0 && enemy[51].flag == 0 && enemy[52].flag == 0 || player.hp <= 0) {*/
 	}
 	if (finish_t >= 100) {
 		DrawFormatString(225, 300, GetColor(0, 255, 0), "YOUR SCORE %d", score);
@@ -655,10 +640,20 @@ void enemy_Draw() {
 		if (player.flag == 1)	DrawFormatString(240, 250, GetColor(255, 165, 0), "GAME CLEAR");
 
 	}
-	if (finish_t >= 200 && hp_g > 575) {
-		player.hp -= 1;
-		score += 20;
-		hp_g = 575 + player.hp * 2;
+	if (finish_t >= 200 && (hp_g > 575||mp_g>575)) {
+		if (hp_g > 575) {
+			player.hp -= 1;
+			score += 20;
+			hp_g = 575 + player.hp * 2;
+		}
+		else if (hp_g <= 575) {
+			if (finish_t % 3 == 0) {
+				player.mp -= 1;
+				mp_g = 575 + player.mp*6.67;
+				score += 200;
+			}
+		}
+		else;
 	}
 	if (finish_t >= 400) DrawFormatString(225, 350, GetColor(0, 255, 0), "YOUR RANK ");
 

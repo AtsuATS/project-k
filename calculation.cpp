@@ -2,6 +2,8 @@
 #include "BaseUnit.h"
 #include "BaseEnemy.h"
 #include "calculation.h"
+#include <time.h>
+#include <stdlib.h>
 #define PI 3.14159265358979323846
 //‰~üã‚ğ‰ñ‚é“®‚«‚ğ‰‰Z‚·‚éŠÖ”
 //r=‰~‚Ì”¼Œa
@@ -64,4 +66,13 @@ float sdig_to_gdig(float sdig, float gdig, int flame){
 	grad = to_rad(gdig);
 	//dif_dig=
 	return srad;
+}
+
+double urandom() {
+	
+	return (double)rand() / ((double)RAND_MAX+1.0);
+}
+
+int nrandom(int n) {
+	return (int)((double)n*urandom());
 }
