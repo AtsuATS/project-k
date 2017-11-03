@@ -6,6 +6,7 @@ int key[256]; // キーが押されているフレーム数を格納する
 void keyboard_Update(){
 	char tmpkey[256];//現在のキー入力状況を格納する
 	GetHitKeyStateAll(tmpkey);//すべてのキーの入力状況を得る
+	GetJoypadNum();//ジョイパッドの接続数を取得
 	for (int i = 0; i < 256; i++){
 		if (tmpkey[i] != 0) {//i番目のキーが押されているとき
 			key[i]++;//加算

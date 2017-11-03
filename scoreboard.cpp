@@ -23,6 +23,10 @@ void scoreboard_Draw(void) {
 	DrawBox(640, 260, 775, 275, Red, TRUE);
 	DrawBox(640, 260, bomb2_g, 275, Green, TRUE);
 
+	if (enemy[53].flag == 1) {
+		DrawFormatString(20, 0, GetColor(255, 255, 255), "BOSS-HP:%d", enemy[53].hp);
+		DrawBox(120, 0, boss_hp, 15, Red, TRUE);
+	}
 
 	DrawFormatString(580, 40, GetColor(0, 0, 255), "SCORE %d", score);
 	DrawFormatString(580, 80, GetColor(0, 255, 0), "HP %d", player.hp);

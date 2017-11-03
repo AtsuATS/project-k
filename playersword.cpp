@@ -56,7 +56,7 @@ void createPlayerSword(float px, float py,int pattern) {
 			playersword.wx = px + R*cos(to_rad(W_NOWDIGANGLE));
 			playersword.wy = py + R*sin(to_rad(W_NOWDIGANGLE));
 			playersword.l_or_r = 'w';
-			playersword.wflame = 50;
+			playersword.wflame = 16;
 			playersword.flag = 1;
 			player.mp -= 2;
 		}

@@ -29,8 +29,8 @@ void stage_Update() {
 	player_Update();
 	playershot_Update();
 	enemy_Update();
-	bomb_Update();
 	enemyshot_Update();
+	bomb_Update();
 }
 
 //•`‰æ‚·‚é
@@ -42,7 +42,6 @@ void stage_Draw() {
 	player_Draw();
 	enemy_Draw();
 	enemyshot_Draw();
-	bomb_Draw();
 	scoreboard_Draw();
 }
 

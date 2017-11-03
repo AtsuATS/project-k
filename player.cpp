@@ -18,6 +18,7 @@ float countflame;
 int hp_g;
 int mp_g;
 int bomb2_g;
+int boss_hp;
 int bombmagnification; //ボムの倍率(通常時は1倍)
 int bombflag[4]; //ボムが発動中かどうかを判断(ボム1は例外)
                  //[2],[3]はボム3の座標記録用
@@ -54,27 +55,29 @@ void player_Initialize() {
 //動きを計算する
 void player_Update() {
 
+
+
 	for (int i = 0; i < 4; i++) {
 		player_flag[i] = 0;
 
-	if (keyboard_Get(KEY_INPUT_UP) > 0) {
+	if (keyboard_Get(KEY_INPUT_UP) > 0|| (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_UP)>0) {
 		player_flag[0] = -player.speed;
-		if (keyboard_Get(KEY_INPUT_LSHIFT) > 0 || keyboard_Get(KEY_INPUT_RSHIFT) > 0)
+		if (keyboard_Get(KEY_INPUT_LSHIFT) > 0 || keyboard_Get(KEY_INPUT_RSHIFT) > 0|| (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_5)>0|| (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_6)>0)
 			player_flag[0] += 2;
 	}
-	if (keyboard_Get(KEY_INPUT_DOWN) > 0) {
+	if (keyboard_Get(KEY_INPUT_DOWN) > 0 || (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_DOWN)>0) {
 		player_flag[2] = player.speed;
-		if (keyboard_Get(KEY_INPUT_LSHIFT) > 0 || keyboard_Get(KEY_INPUT_RSHIFT) > 0)
+		if (keyboard_Get(KEY_INPUT_LSHIFT) > 0 || keyboard_Get(KEY_INPUT_RSHIFT) > 0 || (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_5)>0 || (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_6)>0)
 			player_flag[2] -= 2;
 	}
-	if (keyboard_Get(KEY_INPUT_RIGHT) > 0) {
+	if (keyboard_Get(KEY_INPUT_RIGHT) > 0|| (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_RIGHT)>0) {
 		player_flag[3] = player.speed;
-		if (keyboard_Get(KEY_INPUT_LSHIFT) > 0 || keyboard_Get(KEY_INPUT_RSHIFT) > 0)
+		if (keyboard_Get(KEY_INPUT_LSHIFT) > 0 || keyboard_Get(KEY_INPUT_RSHIFT) > 0 || (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_5)>0 || (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_6)>0)
 			player_flag[3] -= 2;
 	}
-	if (keyboard_Get(KEY_INPUT_LEFT) > 0) {
+	if (keyboard_Get(KEY_INPUT_LEFT) > 0|| (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_LEFT)>0) {
 		player_flag[1] = -player.speed;
-		if (keyboard_Get(KEY_INPUT_LSHIFT) > 0 || keyboard_Get(KEY_INPUT_RSHIFT) > 0)
+		if (keyboard_Get(KEY_INPUT_LSHIFT) > 0 || keyboard_Get(KEY_INPUT_RSHIFT) > 0 || (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_5)>0 || (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_6)>0)
 			player_flag[1] += 2;
 	}
 }
@@ -102,7 +105,7 @@ void player_Update() {
 		caly = 0;
 	}
 
-	if (keyboard_Get(KEY_INPUT_LSHIFT) > 0 || keyboard_Get(KEY_INPUT_RSHIFT) > 0) {
+	if (keyboard_Get(KEY_INPUT_LSHIFT) > 0 || keyboard_Get(KEY_INPUT_RSHIFT) > 0 || (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_5)>0 || (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_6)>0) {
 		if (PShotPushCnt % 100 == 0 && player.flag == 1) {
 			createPlayerShot(player.x, player.y);
 		}
@@ -115,24 +118,21 @@ void player_Update() {
 	}
 	
 	//追加(やられたときの処理)
-	if (enemy[46].flag == 1 || enemy[47].flag == 1 ||
-		enemy[48].flag == 1 || enemy[49].flag == 1 ||
-		enemy[50].flag == 1 || enemy[51].flag == 1 || enemy[52].flag == 1){
-		if (player.hp <= 0) {
-			player.hp = 0;
-			player.flag = 0;
-			playershot->flag = 0;
-		}
-	}
-	if (enemy[46].flag == 0 && enemy[47].flag == 0 &&
-		enemy[48].flag == 0 && enemy[49].flag == 0 &&
-		enemy[50].flag == 0 && enemy[51].flag == 0 && enemy[52].flag == 0) {
-		player.flag = 1;
+	
+	if (player.hp <= 0) {
+		player.hp = 0;
+		player.flag = 0;
 		playershot->flag = 0;
 	}
+	
+	/*if (enemy[53].flag==0&&player.flag==1) {
+		playershot->flag = 0;
+	}*/
+	
+	
 
 	//ボムの機能選択
-	if (keyboard_Get(KEY_INPUT_V) > 0) {
+	if (keyboard_Get(KEY_INPUT_V) > 0 || (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_4)>0) {
 		BombtypePushCut++;
 		if (BombtypePushCut <= 1) {
 			if (player.type_bomb == 3) player.type_bomb = 1;
@@ -142,7 +142,7 @@ void player_Update() {
 	else if(BombtypePushCut != 0) BombtypePushCut = 0;
 
 	//ボム
-	if (keyboard_Get(KEY_INPUT_C) > 0 && player.mp > 0) {
+	if (keyboard_Get(KEY_INPUT_C) > 0 && player.mp > 0 || (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_2)>0) {
 		BombPushCut++;
 		if (BombPushCut <= 1 && player.flag == 1) {
 
@@ -153,7 +153,7 @@ void player_Update() {
 			else if (player.type_bomb == 2&& player.mp - 5 >= 0 &&bombflag[0]==0) {
 				player.mp -= 5;
 				bombflag[0] = 1;
-				bombmagnification = 3;
+				bombmagnification = 2;
 			}
 			else if (player.type_bomb == 3&& player.mp - 20 >= 0 &&bombflag[1]==0) {
 				p_invi[0] = t;
@@ -174,7 +174,7 @@ void player_Update() {
 	if(bombflag[0]==1||bombflag[0]==2) bomb2_g=640+countflame*0.15;
 
 
-	if (keyboard_Get(KEY_INPUT_Z) > 0) {
+	if (keyboard_Get(KEY_INPUT_Z) > 0 || (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_3)>0) {
 		PSwordPushCut_Z++;
 		if (PSwordPushCut_Z <= 1 && player.flag == 1) {
 			createPlayerSword(player.x, player.y, 1);
@@ -183,7 +183,7 @@ void player_Update() {
 	else if(PSwordPushCut_Z != 0) {
 		PSwordPushCut_Z = 0;
 	}
-	if (keyboard_Get(KEY_INPUT_X) > 0) {
+	if (keyboard_Get(KEY_INPUT_X) > 0 || (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_1)>0) {
 		PSwordPushCut_X++;
 		if (PSwordPushCut_X <= 1 && player.flag == 1) {
 			createPlayerSword(player.x, player.y, 2);
@@ -194,6 +194,7 @@ void player_Update() {
 	}
 	playersword_Update(player.x, player.y);
 
+	
 }
 
 

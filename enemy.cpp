@@ -1,8 +1,9 @@
-#define _CRT_SECURE_NO_WARNINGS 
+//#define _CRT_SECURE_NO_WARNINGS
 #include "DxLib.h"
 #include "grobal.h"
 #include "enemy_act.h"
 #include "enemyshot.h"
+#include "calculation.h"
 #define _USE_MATH_DEFINES
 #define SECOND 60
 #include <math.h>
@@ -10,15 +11,22 @@
 
 Enemy_status enemy[ENEMYMAX];
 
-int enemy_R, enemy_G, enemy_B;
+int enemy_R, enemy_G, enemy_B, pointer;
 int score = 0;
-int t = 3000;
+int t = 0;
 int Boss_t = 0;//Boss戦開始で動き出す
 int finish_t = 0;//終わった時に動き出す
-bool GP_flag[1] = { {0} }; //汎用フラグ
+int GP_flag[3] = { {0} }; //汎用フラグ
 int bombcnt[2]; //ボム３が起動したときのカウントを記憶
 int p_invi[2];
 int se;
+int p_x, p_y,e_x,e_y;
+int first = 150;
+int second = first + 150;
+int ret_rand ;
+int waittime;
+int theta = 0;
+
 FILE *fp;
 char *fname = "enemystatus.csv";
 
@@ -56,15 +64,15 @@ int collision2(BaseUnit player, Enemy_shot enemyshot[]) {
 
 			if (range2[j] <= 15 && enemyshot[j].type == 1) {
 				enemyshot[j].flag = 0;
-				return 5*bombmagnification;
+				return (int)(5.0* (1.0 / bombmagnification));
 			}
 			else if (range2[j] <= 15 && enemyshot[j].type == 2) {
 				enemyshot[j].flag = 0;
-				return 3*bombmagnification;
+				return (int)(3.0* (1.0 / bombmagnification));
 			}
 			else if (range2[j] <= 15 && enemyshot[j].type == 3) {
 				enemyshot[j].flag = 0;
-				return 2*bombmagnification;
+				return (int)(2.0*(1.0 / bombmagnification));
 			}
 		}
 	}
@@ -187,8 +195,18 @@ void enemy_Initialize() {
 	enemy_R = LoadGraph("GF\\敵赤仮.png");
 	enemy_G = LoadGraph("GF\\敵緑仮.png");
 	enemy_B = LoadGraph("GF\\敵青仮.png");
+	pointer = LoadGraph("GF\\point.png");
 
 	se = LoadSoundMem("BGM\\tekikougeki.wav");
+
+	for (int i = 0; i < 3; i++) {
+		GP_flag[i] = 0;
+	}
+	for (int i = 0;i < ENEMYMAX; i++) {
+		for (int j = 0; j < 8; j++) {
+			enemy[i].act[j]=0;
+		}
+	}
 
 }
 
@@ -321,29 +339,95 @@ void enemy_Update() {
 	if (enemy[46].flag == 0 && enemy[47].flag == 0 &&
 		enemy[48].flag == 0 && enemy[49].flag == 0 &&
 		enemy[50].flag == 0 && enemy[51].flag == 0 &&
-		enemy[52].flag == 0 &&enemy[53].flag==0) {
+		enemy[52].flag == 0 &&enemy[53].flag==0&&Boss_t==0) {
 		enemy[53].flag = 1;
 		Boss_t -= 300;
 	}
 
 	//Boss戦
+	//第1
 	if (enemy[53].flag == 1) {
-		int first = 150;
-		int second = first*2;
-		Boss_t++;
-		if (0<=Boss_t&&Boss_t <= first * SECOND) {
+		if (/*(0<=Boss_t&&Boss_t <= first * SECOND)||*/enemy[53].hp>150 && Boss_t >= 0) {
 			if (GP_flag[0] == 0) {
 			     enemy_act5(&enemy[53]);
 				 if (enemy[53].y >= 150)GP_flag[0] = 1;
 			}
-			else enemy_act8(&enemy[53]);
+			else {
+				if (GP_flag[0] == 1) {
+					waittime = 0;
+					ret_rand = nrandom(SECOND * 8);
+					if (ret_rand == 1) GP_flag[0] = 2;
+					//else if (GP_flag[0] == 2);
+					else enemy_act8(&enemy[53]);
+				}
+				else if (GP_flag[0] == 2) {
+					GP_flag[0] = 3;
+				}
+				else if (GP_flag[0] == 3) {
+					waittime++;
+					if (waittime == SECOND * 2) {
+						GP_flag[0] = 1;
+					}
+				}
+			}
 		}
-		else if (first * SECOND < Boss_t&&Boss_t < second * SECOND) {
-			enemy_act7(&enemy[53]);
+
+		//第2
+		else if (/*(first * SECOND < Boss_t&&Boss_t < second * SECOND)||*/enemy[53].hp<=150 && Boss_t >= 0) {
+			if(GP_flag[2]!=3) enemy_act7(&enemy[53]);
+			if (GP_flag[2] == 0) {
+				waittime = 0;
+				ret_rand = nrandom(SECOND * 1);
+				if (ret_rand == 1) {
+					GP_flag[2] = 1;
+					p_x = player.x;
+					p_y = player.y;
+				}
+
+				//攻撃(2)
+				ret_rand = nrandom(SECOND * 4);
+				if (ret_rand == 1) {
+					GP_flag[2] = 3;
+					e_x = enemy[53].x;
+					e_y = enemy[53].y;
+				}
+			}
+			else if (GP_flag[2] == 1) {
+				waittime++;
+				if (waittime == SECOND * 1) 
+					GP_flag[2] = 2;
+			}
+			else if (GP_flag[2] == 2) 
+				GP_flag[2] = 0;
+			else if (GP_flag[2] == 3) {
+				//左右の移動の選択
+				if(e_x<225){//右
+					if (enemy[53].x < 490) {
+						enemy[53].x += enemy[53].speed*1.41;
+						if ((Boss_t % 12)==0&&waittime<8) {
+							waittime++;
+							createEnemyShot(enemy[53].x, enemy[53].y, 1, 9, 6, 2, atan2(player.y - enemy[53].y, player.x - enemy[53].x));
+						}
+					}
+					else GP_flag[2] = 0;
+				}
+				else if (e_x >= 225) {//左
+					if (enemy[53].x > 60) {
+						enemy[53].x -= enemy[53].speed*1.41;
+						if ((Boss_t % 12) == 0&& waittime<8) {
+							waittime++;
+							createEnemyShot(enemy[53].x, enemy[53].y, 1, 9, 6, 2, atan2(player.y - enemy[53].y, player.x - enemy[53].x));
+						}
+					}
+					else GP_flag[2] = 0;
+				}
+			}
 		}
 		else if (Boss_t <= second * SECOND) {
 
 		}
+		Boss_t++;
+		boss_hp = 120+enemy[53].hp*1.2666666;
 	}
 
 
@@ -505,24 +589,36 @@ void enemy_Update() {
 
 	//参考
 	//ex ey...座標　n...弾の個数　p...パターン　s...スピード　t...弾のタイプ　ang...角度
-	/*
+	
 	//レーザー弾　攻撃(1),(2)
-	if (t >= 200 && t < 270 && enemy[53].flag == 1) enemy_act0(&enemy[53], 90);
-	if (t >= 350 && t % 60 == 0) {
-	if (enemy[53].flag == 1) createEnemyShot(enemy[53].x, enemy[53].y, 1, 9, 6, 2, atan2(player.y - enemy[53].y, player.x - enemy[53].x));
+	//if (t >= 200 && t < 270 && enemy[53].flag == 1) enemy_act0(&enemy[53], 90);
+	if (GP_flag[0]==2&&enemy[53].flag==1) {
+		//if (enemy[53].flag == 1)
+		createEnemyShot(enemy[53].x, enemy[53].y, 1, 9, 6, 2, atan2(player.y - enemy[53].y, player.x - enemy[53].x));
 	}
 
 	//自機狙いからの回転弾幕　　攻撃１
-	if (t >= 350 && t < 650 && t % 3 == 0) {
-	if (enemy[53].flag == 1)createEnemyShot(enemy[49].x, enemy[49].y, 1, 11, 6, 1, 1.11);
+	if (/*0 <= Boss_t&&Boss_t <= first * SECOND*/enemy[53].hp>150 && Boss_t >= 0) {
+		if (GP_flag[1] == 0) {
+			if (GP_flag[0] == 1 && Boss_t % 3 == 0 && enemy[53].flag == 1) {
+				createEnemyShot(enemy[53].x, enemy[53].y, 1, 11, 6, 1, 1.11);
+			}
+			if (Boss_t % (SECOND * 5) == 0) GP_flag[1] = 1;
+		}
+		else if (GP_flag[1] == 1) {
+			if (GP_flag[0] == 1 && Boss_t % 5 == 0 && enemy[53].flag == 1) 
+				createEnemyShot(enemy[53].x, enemy[53].y, 1, 2, 6, 3, atan2(player.y - enemy[53].y, player.x - enemy[53].x));
+			
+			if (Boss_t % (SECOND * 2) == 0) GP_flag[1] = 0;
+		}
 	}
-	if (t >= 650 && t < 950 && t % 5 == 0) {
-	if (enemy[49].flag == 1)createEnemyShot(enemy[49].x, enemy[49].y, 1, 2, 6, 3, atan2(player.y - enemy[49].y, player.x - enemy[49].x));
+	//if (t == 950) t = 340;
+
+	//ポインタからの拡散弾幕　　攻撃2
+	if (/*first * SECOND < Boss_t&&Boss_t < second * SECOND*/enemy[53].hp <= 150 && Boss_t >= 0) {
+		if (GP_flag[2] == 2) 
+			createEnemyShot(p_x-25, p_y-31, 20, 10, 6, 3, 1);
 	}
-	if (t == 950) t = 340;
-	*/
-
-
 
 	//当たり判定やフラグの管理等
 	for (int i = 0; i < ENEMYMAX; i++) {
@@ -571,8 +667,10 @@ void enemy_Update() {
 		
 
 		//collision3
-		if (collision3(player, enemy, i) == 1) {
-			if (player.hp >= 1 && p_invi[1] != 1) player.hp--;
+		if (enemy[53].flag != 1) {
+			if (collision3(player, enemy, i) == 1) {
+				if (player.hp >= 1 && p_invi[1] != 1) player.hp -= 1 * (1 / bombmagnification);
+			}
 		}
 
 		//collision4
@@ -644,7 +742,12 @@ void enemy_Draw() {
 
 	//Boss戦手前の表示
 	if (-200<=Boss_t&&Boss_t<0&&enemy[53].flag==1) {
-		DrawFormatString(245, 300, GetColor(255, 0, 0), "BOSS BATLE!!");
+		DrawFormatString(245, 300, GetColor(255, 0, 0), "BOSS BATTLE!!");
+	}
+
+	//boss戦のポインターの描画
+	if (GP_flag[2] == 1) {
+		DrawRotaGraph(p_x ,p_y, 1, 0, pointer, TRUE);
 	}
 
 	//終了時の処理 最後の敵が消える又は自機体力が０になった時
@@ -678,16 +781,16 @@ void enemy_Draw() {
 	if (finish_t >= 400) DrawFormatString(225, 350, GetColor(0, 255, 0), "YOUR RANK ");
 
 	if (finish_t >= 450) {
-		if (score >= 7500)DrawFormatString(330, 350, GetColor(255, 255, 255), "S");
-		if (score < 7500 && score >= 6900)DrawFormatString(330, 350, GetColor(255, 255, 255), "A");
-		if (score < 6900 && score >= 6400)DrawFormatString(330, 350, GetColor(255, 255, 255), "B");
-		if (score < 6400 && score >= 6000)DrawFormatString(330, 350, GetColor(255, 255, 255), "C");
-		if (score < 6000 && score >= 5700)DrawFormatString(330, 350, GetColor(255, 255, 255), "D");
-		if (score < 5700 && score >= 0)DrawFormatString(330, 350, GetColor(255, 255, 255), "E");
+		if (score >17000)DrawFormatString(330, 350, GetColor(255, 255, 255), "S");
+		if (score <=17000 && score >15000)DrawFormatString(330, 350, GetColor(255, 255, 255), "A");
+		if (score <=15000 && score >13000)DrawFormatString(330, 350, GetColor(255, 255, 255), "B");
+		if (score <=13000 && score >11000)DrawFormatString(330, 350, GetColor(255, 255, 255), "C");
+		if (score <=11000 && score >9000)DrawFormatString(330, 350, GetColor(255, 255, 255), "D");
+		if (score <= 9000 && score >= 0)DrawFormatString(330, 350, GetColor(255, 255, 255), "E");
 
 	}
 	if (finish_t >= 500) {
-		DrawFormatString(190, 400, GetColor(255, 255, 255), "RESTART: Z   EXIT: X");
+		DrawFormatString(190, 400, GetColor(255, 255, 255), "RESTART: START   EXIT: SELECT");
 
 	}
 

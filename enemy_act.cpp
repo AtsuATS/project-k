@@ -193,8 +193,6 @@ void enemy_act7(Enemy_status *enemy) {
 }
 
 void enemy_act8(Enemy_status *enemy) {
-	static int theta = 0;
-
 	//enemy->x += enemy->speed;
 	enemy->x = STOPPOINT_X + 215 * sin(0.5*to_rad(theta));
 	enemy->y =STOPPOINT_Y- 50*sin(to_rad(theta));
